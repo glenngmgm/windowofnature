@@ -21,3 +21,6 @@ Checked all generated local links/assets and WhatsApp destinations, absence of e
 Push main to publish. Custom domain is not attached; keep GitHub Pages canonical URLs until separately configured.
 
 Never claim preservative-free, 0% preservatives or no artificial colouring. WON uses preservatives; this correction was confirmed in the concurrent main update and is preserved in the redesign.
+
+## Revised direction
+Restore original navy / ivory / gold identity and floating pill navigation. Shopee is the primary conversion. Rabbits and chickens lead; alfalfa is one collection with equestrian applications. The desktop homepage uses a sticky introduction with sequential product showcases and native scrolling. Full product pages follow pack palettes: rabbit navy/gold, Shori pink/cream, hay sage/beige, poultry orange/cream, pellets green. WON can customize feed and nutrition; feedmill and wholesale pages describe this and the enquiry form includes product interest.
