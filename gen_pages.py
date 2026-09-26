@@ -106,13 +106,6 @@ TPL='''<!DOCTYPE html>
   </div>
 </section>
 
-<section style="background:var(--navy);color:var(--ivory)">
-  <div class="wrap">
-    <div class="center"><span class="eyebrow r" style="color:var(--gold-2)">From the catalogue</span><h2 class="d lg r d1" style="margin-top:20px">Seen on <i>Shopee</i></h2></div>
-    <div class="gal r d2">{gal}</div>
-  </div>
-</section>
-
 <section id="trust">
   <div class="ph"></div>
   <div class="wrap">
