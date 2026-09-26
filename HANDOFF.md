@@ -19,3 +19,5 @@ Checked all generated local links/assets and WhatsApp destinations, absence of e
 
 ## Deployment
 Push main to publish. Custom domain is not attached; keep GitHub Pages canonical URLs until separately configured.
+
+Never claim preservative-free, 0% preservatives or no artificial colouring. WON uses preservatives; this correction was confirmed in the concurrent main update and is preserved in the redesign.
