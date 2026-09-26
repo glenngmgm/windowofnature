@@ -12,7 +12,7 @@ PAGES={
           ('super-20kg','Mill sack · 20 kg','Super Rabbit Feed','For farms and breeders, straight from the mill.','28867359695'),
           ('bundle-premium-super','Set · 1 kg + 1 kg','Super + Premium','Both formulas in one set.','44458452013')],
    facts=[('20%+','protein','Alfalfa-led nutrition for steady growth and condition.'),('Black seed','habbatussauda','Traditional immune support in every batch of Super.'),('Olive oil','in Premium','Cold-pressed, for coat shine and skin health.')],
-   gal=[('sec-q','27251151691'),('sec-a','27251151691'),('sec-b','26728134263')],
+   gal=[('../banners/b4','27251151691'),('../banners/b5','27251151691'),('../banners/b1','27251151691')],
    cta='Ready for your <i>rabbit</i>',ctap='Order today on Shopee, or write to us for farm quantities.',ctaid='27251151691',credit='Hero photograph: "Blanc De Hotot" by The_only_true_editor, Wikimedia Commons, CC BY-SA 4.0.'),
  'shori':dict(title='Shōri — WON',hero='photos/guinea-grass.jpg',pos='30% center',eyebrow='Rabbits & guinea pigs · 勝利',
    h1='Shōri, for<br><i>two companions</i>',lead="Indonesia's first dual-nutrition formula. Japanese-inspired, milled in Bandung, with the vitamin C guinea pigs cannot make themselves.",
@@ -25,7 +25,7 @@ PAGES={
    gal=[('sec-r','51350921733'),('sec-k','51350921733'),('sec-p','51350921733')],
    cta='Discover <i>Shōri</i>',ctap='Available on Shopee in 1 kg, or in sets with Italian hay.',ctaid='51350921733',credit=''),
  'hay':dict(title='Alfalfa Hay — WON',hero='photos/hay-bales.jpg',pos='center 55%',eyebrow='Alfalfa hay · imported from Italy',
-   h1="Indonesia's largest<br>importer of <i>alfalfa</i>",lead='Sun-cured in Emilia-Romagna, above 20% protein, non-GMO. Shipped by the container and fresh with every harvest.',
+   h1="Indonesia's largest <i>alfalfa</i> importer",lead='Sun-cured in Emilia-Romagna, above 20% protein, non-GMO. Shipped by the container and fresh with every harvest.',
    band=[('#1','importer in Indonesia'),('20%+','crude protein'),('Italy','Emilia-Romagna'),('Fresh','every harvest')],
    sec='From a pouch to a <i>bale</i>',
    cards=[('hay-italia-500g','Hay · 500 g','Alfalfa Hay Italia','The pouch, for one or two companions.','29611529965'),
@@ -33,7 +33,7 @@ PAGES={
           ('hay-italia-11kg','Hay · 11 kg','Alfalfa Hay Italia','The full bale, for many cages or livestock.','24586140324'),
           ('pellet-hay','Hay · pellets','Hay Green Pellets','Pure alfalfa, pressed. Nothing else.','44151924570')],
    facts=[('20%','protein and above','Legume hay, richer than grass hay, for growth, milk and recovery.'),('Fibre','for teeth and gut','Long, sun-cured stems keep rabbit and guinea pig digestion moving.'),('Non-GMO','dehydrated at source','Cut and dried in Italy, sealed for the journey, opened fresh in Bandung.')],
-   gal=[('sec-c','29611524857'),('sec-d','29611529965'),('sec-u','44151924570')],
+   gal=[('../banners/b3','24586140324'),('sec-c','29611524857'),('sec-d','29611529965')],
    cta='Hay by the <i>tonne</i>',ctap='Bales, pallets and full containers for farms, pet shops and distributors across Indonesia.',ctaid='29611524857',credit=''),
  'poultry':dict(title='Poultry Feed — WON',hero='photos/hen-freerange.jpg',pos='center 40%',eyebrow='For poultry · starter, grower, layer',
    h1='Super <i>Chicken</i> Feed',lead='Three formulas for every stage of the flock, pressed fresh at the mill. Rapid growth on less feed, and eggs you can count on.',
@@ -43,7 +43,7 @@ PAGES={
           ('ayam-starter-25kg','Starter · 25 kg','Chicken Starter 25 kg','The mill sack for farms. 20% protein.','56408384874'),
           ('ayam-petelur-25kg','Layer · 25 kg','Omega Layer','Omega-enriched layer formula for consistent, quality eggs.','26379151810')],
    facts=[('22%','starter protein','Lab-tested formula for the fastest, healthiest start.'),('Omega','in every layer bag','Richer yolks and steadier laying.'),('Fresh','per batch','Pressed at our mill in Bandung, never warehoused for months.')],
-   gal=[('sec-h','43403176817'),('sec-g','43403176817'),('sec-i','43403176817')],
+   gal=[('../banners/b6','43403176817'),('sec-h','43403176817'),('sec-i','43403176817')],
    cta='Feed the <i>flock</i>',ctap='Order on Shopee, or write to us for farm quantities and scheduled delivery.',ctaid='43403176817',credit=''),
 }
 TPL='''<!DOCTYPE html>
@@ -59,7 +59,7 @@ TPL='''<!DOCTYPE html>
 <link rel="icon" href="img/mark-navy.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
 <style>.hero .ph{{background-image:url({hero});background-position:{pos}}}</style>
 </head>
@@ -81,7 +81,7 @@ TPL='''<!DOCTYPE html>
   <div class="ph"></div>
   <div class="wrap">
     <span class="eyebrow r in" style="color:var(--gold-2)">{eyebrow}</span>
-    <h1 class="d xl r in d1" style="margin-top:20px">{h1}</h1>
+    <h1 class="d lg r in d1" style="margin-top:20px;max-width:12ch">{h1}</h1>
     <p class="r in d2">{lead}</p>
     <div class="cta r in d3">
       <a class="btn fill" href="https://shopee.co.id/product/1250916592/{ctaid}" target="_blank" rel="noopener">Shop now</a>
