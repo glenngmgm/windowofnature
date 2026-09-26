@@ -5,7 +5,7 @@ NAV='<a href="rabbit.html">Rabbit</a><a href="shori.html">Shōri</a><a href="hay
 PAGES={
  'rabbit':dict(title='Rabbit Feed — WON',hero='photos/hero-white.jpg',pos='center 38%',eyebrow='For rabbits · Super & Premium',
    h1='Super <i>&</i> Premium',lead='Two alfalfa pellets from one mill. Super for every day. Premium, finished with olive oil, for growth and coat.',
-   band=[('2','formulas'),('Alfalfa','Australian'),('0%','preservatives'),('1–20 kg','pack sizes')],
+   band=[('2','formulas'),('Alfalfa','Australian'),('20%+','protein'),('1–20 kg','pack sizes')],
    sec='Choose your <i>pellet</i>',
    cards=[('super-1kg','Everyday · 1 kg','Super Rabbit Feed','Australian alfalfa and black seed. The daily pellet, our best seller.','27251151691'),
           ('premium-1kg','Growth & coat · 1 kg','Premium Rabbit Feed','The same alfalfa base, finished with olive oil for growth and a glossy coat.','26728134263'),
@@ -127,7 +127,7 @@ TPL='''<!DOCTYPE html>
 
 <footer><div class="wrap">
   <div class="foot">
-    <div><a class="logo" href="./"><img src="img/logo-white.png" alt="WON"></a><p>Window of Nature. A feed mill in Bandung, West Java, crafting small-batch, preservative-free nutrition for rabbits, guinea pigs, poultry and livestock.</p></div>
+    <div><a class="logo" href="./"><img src="img/logo-white.png" alt="WON"></a><p>Window of Nature. A feed mill in Bandung, West Java, crafting precisely formulated, small-batch nutrition for rabbits, guinea pigs, poultry and livestock.</p></div>
     <div><h4>Explore</h4>{navfoot}</div>
     <div><h4>Shop</h4><a href="https://shopee.co.id/wonfeed_" target="_blank" rel="noopener">Shopee</a><a href="#" id="f-tt" target="_blank" rel="noopener">TikTok Shop</a><a href="#" data-wa="Hello WON, I would like to place an order.">WhatsApp</a></div>
     <div><h4>Contact</h4><a href="#" id="f-ig" target="_blank" rel="noopener">Instagram</a><a href="mailto:hello@windowofnature.co.id">hello@windowofnature.co.id</a><a href="#">Bandung, West Java</a></div>
