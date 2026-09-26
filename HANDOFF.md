@@ -33,7 +33,7 @@ Glenn tried a Codex redesign (commits 159d765, f2f11a4, c26b162: forest green/ed
 
 
 ## Photo changes (26 Sep 2026)
-- Glenn disliked `rabbits-hay` (brown rabbits with a bowl); it is no longer used anywhere. Replacements: `pellets-hands` (home Feedmill tile, feedmill 'What we tailor'), `pellets-bowl` (feedmill hero), `cattle-feed` (home Wholesale 'Farms'), `sheep-meadow`, `horses-hay`, `cattle-feed` (feedmill species strip). Credits for the CC BY-SA ones are in the index and feedmill footers. `tile-rabbit.webp` is a crop of rabbit-white-grass with the rabbit on the left so the Super/Premium bags don't cover it.
+- Glenn disliked `rabbits-hay` (brown rabbits with a bowl); it is no longer used anywhere. Replacements: `pellets-feeder` (small, realistic pellets: home Feedmill tile + feedmill hero), `hand-feeding` (feedmill 'What we tailor'). Glenn rejected big biomass-pellet photos as not looking like feed, `cattle-feed` (home Wholesale 'Farms'), `sheep-meadow`, `horses-hay`, `cattle-feed` (feedmill species strip). Credits for the CC BY-SA ones are in the index and feedmill footers. `tile-rabbit.webp` is a crop of rabbit-white-grass with the rabbit on the left so the Super/Premium bags don't cover it.
 - Feedmill page names lambs, goats, cattle, horses etc. and lists species incl. crickets (WON's banner shows jangkrik feed).
 
 ## Performance & SEO setup (audit fixes, 26 Sep 2026)
