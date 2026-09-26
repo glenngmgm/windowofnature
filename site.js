@@ -3,7 +3,7 @@ const CONFIG={
   whatsapp:'6281391779997',
   instagram:'https://www.instagram.com/wonfeed.official',
   tiktok:'https://www.tiktok.com/@wonfeed.official',
-  ga4:'' // paste a Google Analytics 4 Measurement ID here (looks like G-XXXXXXX) to switch tracking on
+  ga4:'G-B29T22FFXQ' // Google Analytics 4 Measurement ID
 };
 /* ================ */
 const P='https://shopee.co.id/product/1250916592/';

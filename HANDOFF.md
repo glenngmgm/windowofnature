@@ -36,7 +36,7 @@ Glenn tried a Codex redesign (commits 159d765, f2f11a4, c26b162: forest green/ed
 - `finalize.py` stamps every `<img>` with width/height, lazy-loads all but the logo, and preloads the hero. `gen_pages.py` runs it automatically; run `python3 finalize.py` after hand-editing index.html or feedmill.html.
 - Google Fonts load non-blocking (preload + media=print swap). Hero parallax runs on scroll only.
 - Share previews: `og/<page>.jpg` (1200x630). og:image/og:url use https://glenngmgm.github.io/windowofnature/ — **switch these to https://windowofnature.co.id/ when the domain is attached** (search-replace the base URL in *.html and gen_pages.py).
-- Analytics: set `CONFIG.ga4` in site.js to a GA4 Measurement ID (G-...). Outbound clicks to Shopee/TikTok/WhatsApp/Instagram are then tracked as `outbound_click` with channel/label/page.
+- Analytics: GA4 is ON with Measurement ID `G-B29T22FFXQ` (`CONFIG.ga4` in site.js). Outbound clicks to Shopee/TikTok/WhatsApp/Instagram are tracked as `outbound_click` with channel/label/page.
 - Icons: img/favicon-32.png, img/apple-touch-icon.png, img/icon-192.png. robots.txt + sitemap.xml at root.
 
 ## Claims (softened 26 Sep 2026, restore only with proof)
