@@ -1,12 +1,12 @@
-/* ===== EDIT ===== */
-const CONFIG={whatsapp:'628112330890',instagram:'https://www.instagram.com/wonfeed.official',tiktok:'https://www.tiktok.com/@wonfeed_'};
-/* ================ */
-const P='https://shopee.co.id/product/1250916592/';
-const wa=m=>`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(m)}`;
-document.querySelectorAll('[data-wa]').forEach(a=>{a.href=wa(a.dataset.wa);a.target='_blank';a.rel='noopener'});
-const ig=document.getElementById('f-ig'),tt=document.getElementById('f-tt');if(ig)ig.href=CONFIG.instagram;if(tt)tt.href=CONFIG.tiktok;
-document.querySelectorAll('#mm a').forEach(a=>a.onclick=()=>document.getElementById('mm').classList.remove('open'));
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
-document.querySelectorAll('.r').forEach(e=>io.observe(e));
-const heroph=document.querySelector('.hero .ph');
-if(heroph){(function tick(){const y=scrollY;if(y<1200)heroph.style.transform=`scale(1.06) translateY(${y*.18}px)`;requestAnimationFrame(tick)})();}
+/* Progressive enhancement. Product pages, navigation and shop links work without JavaScript. */
+const menuButton=document.querySelector('.menu-toggle');
+const menu=document.querySelector('.mobile-menu');
+function closeMenu(){if(!menuButton||!menu)return;menu.classList.remove('open');menuButton.setAttribute('aria-expanded','false');document.body.style.overflow='';}
+menuButton?.addEventListener('click',()=>{const open=menuButton.getAttribute('aria-expanded')!=='true';menuButton.setAttribute('aria-expanded',String(open));menu.classList.toggle('open',open);document.body.style.overflow=open?'hidden':'';});
+menu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMenu();document.querySelectorAll('.collection-nav[open]').forEach(d=>d.open=false);menuButton?.focus();}});
+document.addEventListener('click',e=>document.querySelectorAll('.collection-nav[open]').forEach(d=>{if(!d.contains(e.target))d.open=false;}));
+window.matchMedia('(min-width:761px)').addEventListener('change',e=>{if(e.matches)closeMenu();});
+if('IntersectionObserver' in window&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('js');const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}}),{threshold:.08});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));}
+const form=document.querySelector('#supply-enquiry');
+form?.addEventListener('submit',e=>{e.preventDefault();if(!form.reportValidity())return;const data=new FormData(form);const message=`Hello Window of Nature, I would like to discuss alfalfa supply.\n\nName: ${data.get('name')}\nCompany / stable: ${data.get('company')}\nBusiness type: ${data.get('business')}\nDelivery city: ${data.get('city')}\nEstimated requirement: ${data.get('volume')}\nAdditional details: ${data.get('details')||'None'}`;const link=document.querySelector('#prepared-enquiry');link.href=`https://wa.me/6281391779997?text=${encodeURIComponent(message)}`;link.classList.remove('hidden');document.querySelector('.form-status').textContent='Your enquiry is ready. Open WhatsApp to review and send it.';link.focus();});

@@ -1,150 +1,104 @@
-# Generates one full-screen page per product line from a shared template.
+"""Generate the static WON site. Run from the repository root; no build needed to serve."""
+from pathlib import Path
+from html import escape
+from urllib.parse import quote
 import json
-WA='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 12 12 0 0 0 4.6 4c1.7.7 2.3.8 3.1.7a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.2-.2-.2-.4-.3z"/></svg>'
-NAV='<a href="rabbit.html">Rabbit</a><a href="shori.html">Shōri</a><a href="hay.html">Alfalfa Hay</a><a href="poultry.html">Poultry</a><a href="feedmill.html">The Feedmill</a>'
-PAGES={
- 'rabbit':dict(title='Rabbit Feed — WON',hero='photos/hero-white.jpg',pos='center 38%',eyebrow='For rabbits · Super & Premium',
-   h1='Super <i>&</i> Premium',lead='Two alfalfa pellets from one mill. Super for every day. Premium, finished with olive oil, for growth and coat.',
-   band=[('2','formulas'),('Alfalfa','Australian'),('0%','preservatives'),('1–20 kg','pack sizes')],
-   sec='Choose your <i>pellet</i>',
-   cards=[('super-1kg','Everyday · 1 kg','Super Rabbit Feed','Australian alfalfa and black seed. The daily pellet, our best seller.','27251151691'),
-          ('premium-1kg','Growth & coat · 1 kg','Premium Rabbit Feed','The same alfalfa base, finished with olive oil for growth and a glossy coat.','26728134263'),
-          ('super-20kg','Mill sack · 20 kg','Super Rabbit Feed','For farms and breeders, straight from the mill.','28867359695'),
-],
-   facts=[('20%+','protein','Alfalfa-led nutrition for steady growth and condition.'),('Black seed','habbatussauda','Traditional immune support in every batch of Super.'),('Olive oil','in Premium','Cold-pressed, for coat shine and skin health.')],
-   gal=[('../banners/b4','27251151691'),('../banners/b5','27251151691'),('../banners/b1','27251151691')],
-   cta='Ready for your <i>rabbit</i>',ctap='Order today on Shopee, or write to us for farm quantities.',ctaid='27251151691',credit='Hero photograph: "Blanc De Hotot" by The_only_true_editor, Wikimedia Commons, CC BY-SA 4.0.'),
- 'shori':dict(title='Shōri — WON',hero='photos/guinea-grass.jpg',pos='30% center',eyebrow='Rabbits & guinea pigs · 勝利',
-   h1='Shōri, for<br><i>two companions</i>',lead="Indonesia's first dual-nutrition formula. Japanese-inspired, milled in Bandung, with the vitamin C guinea pigs cannot make themselves.",
-   band=[('18%','crude protein'),('14.5%','crude fibre'),('+C','vitamin'),('2550','kcal / kg')],
-   sec='The Shōri <i>range</i>',
-   cards=[('shori-vitc','Daily blend · 1 kg','Shōri Daily Blend','Corn, wheat, rice bran, soybean, alfalfa and copra, with omega and vitamin C.','51350921733'),
-],
-   facts=[('Vitamin C','for guinea pigs','Guinea pigs cannot synthesise it. Shōri carries it in every pellet.'),('Omega','for coat & heart','Balanced fatty acids for skin, coat and condition.'),('One bag','two animals','Rabbit and guinea pig households feed from a single blend.')],
-   gal=[('sec-r','51350921733'),('sec-k','51350921733'),('sec-p','51350921733')],
-   cta='Discover <i>Shōri</i>',ctap='Available on Shopee in 1 kg, or in sets with Italian hay.',ctaid='51350921733',credit=''),
- 'hay':dict(title='Alfalfa Hay — WON',hero='photos/hay-bales.jpg',pos='center 55%',eyebrow='Alfalfa hay · imported from Italy',
-   h1="Indonesia's largest <i>alfalfa</i> importer",lead='Sun-cured in Emilia-Romagna, above 20% protein, non-GMO. Shipped by the container and fresh with every harvest.',
-   band=[('#1','importer in Indonesia'),('20%+','crude protein'),('Italy','Emilia-Romagna'),('Fresh','every harvest')],
-   sec='From a pouch to a <i>bale</i>',
-   cards=[('hay-italia-500g','Hay · 500 g','Alfalfa Hay Italia','The pouch, for one or two companions.','29611529965'),
-          ('hay-italia-500g','Hay · 1 kg','Alfalfa Hay Italia','The family bag. Our best seller.','29611524857'),
-          ('hay-italia-11kg','Hay · 11 kg','Alfalfa Hay Italia','The full bale, for many cages or livestock.','24586140324'),
-          ('pellet-hay','Hay · pellets','Hay Green Pellets','Pure alfalfa, pressed. Nothing else.','44151924570')],
-   facts=[('20%','protein and above','Legume hay, richer than grass hay, for growth, milk and recovery.'),('Fibre','for teeth and gut','Long, sun-cured stems keep rabbit and guinea pig digestion moving.'),('Non-GMO','dehydrated at source','Cut and dried in Italy, sealed for the journey, opened fresh in Bandung.')],
-   gal=[('../banners/b3','24586140324'),('sec-c','29611524857'),('sec-d','29611529965')],
-   cta='Hay by the <i>tonne</i>',ctap='Bales, pallets and full containers for farms, pet shops and distributors across Indonesia.',ctaid='29611524857',credit=''),
- 'poultry':dict(title='Poultry Feed — WON',hero='photos/hen-freerange.jpg',pos='center 40%',eyebrow='For poultry · starter, grower, layer',
-   h1='Super <i>Chicken</i> Feed',lead='Three formulas for every stage of the flock, pressed fresh at the mill. Rapid growth on less feed, and eggs you can count on.',
-   band=[('22%','starter protein'),('17%','grower protein'),('Ω','omega layer'),('1–25 kg','pack sizes')],
-   sec='Every <i>stage</i> of the flock',
-   cards=[('ayam-starter','Starter · days 0–21','Super Chicken Feed Starter','22% protein for the first three weeks. Rapid growth, less feed.','43403176817'),
-          ('ayam-starter-25kg','Starter · 25 kg','Chicken Starter 25 kg','The mill sack for farms. 20% protein.','56408384874'),
-          ('ayam-petelur-25kg','Layer · 25 kg','Omega Layer','Omega-enriched layer formula for consistent, quality eggs.','26379151810')],
-   facts=[('22%','starter protein','Lab-tested formula for the fastest, healthiest start.'),('Omega','in every layer bag','Richer yolks and steadier laying.'),('Fresh','per batch','Pressed at our mill in Bandung, never warehoused for months.')],
-   gal=[('../banners/b6','43403176817'),('sec-h','43403176817'),('sec-i','43403176817')],
-   cta='Feed the <i>flock</i>',ctap='Order on Shopee, or write to us for farm quantities and scheduled delivery.',ctaid='43403176817',credit=''),
-}
-TPL='''<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title}</title>
-<meta name="description" content="{leadplain}">
-<meta property="og:title" content="{title}">
-<meta property="og:description" content="{leadplain}">
-<meta property="og:image" content="https://windowofnature.co.id/{hero}">
-<link rel="icon" href="img/mark-navy.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css">
-<style>.hero .ph{{background-image:url({hero});background-position:{pos}}}</style>
-</head>
-<body>
-<header>
-  <div class="pill">
-    <a class="logo" href="./"><img src="img/logo-white.png" alt="WON Window of Nature"></a>
-    <div class="links">{nav}</div>
-    <div class="nav-cta">
-      <a class="btn white" href="https://shopee.co.id/wonfeed_" target="_blank" rel="noopener">Shop</a>
-      <a class="btn fill" href="#" data-wa="Hello WON, I would like to place an order.">Order now</a>
-      <button class="burger" aria-label="menu" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span></button>
-    </div>
-  </div>
-  <div class="mmenu" id="mm">{nav}<a href="https://shopee.co.id/wonfeed_" target="_blank" rel="noopener">Shop on Shopee</a></div>
-</header>
-
-<section class="hero">
-  <div class="ph"></div>
-  <div class="wrap">
-    <span class="eyebrow r in" style="color:var(--gold-2)">{eyebrow}</span>
-    <h1 class="d lg r in d1" style="margin-top:20px;max-width:12ch">{h1}</h1>
-    <p class="r in d2">{lead}</p>
-    <div class="cta r in d3">
-      <a class="btn fill" href="https://shopee.co.id/product/1250916592/{ctaid}" target="_blank" rel="noopener">Shop now</a>
-      <a class="btn white" href="./#b2b">Wholesale</a>
-    </div>
-  </div>
-  <div class="scroll">scroll</div>
-</section>
-
-<div class="band"><div class="wrap">{band}</div></div>
-
-<section>
-  <div class="wrap">
-    <div class="head center"><span class="eyebrow r">The range</span><h2 class="d lg r d1">{sec}</h2></div>
-    <div class="showcase n{ncards}">{cards}</div>
-  </div>
-</section>
-
-<section style="background:var(--ivory-2)">
-  <div class="wrap">
-    <div class="facts">{facts}</div>
-  </div>
-</section>
-
-<section style="background:var(--navy);color:var(--ivory)">
-  <div class="wrap">
-    <div class="center"><span class="eyebrow r" style="color:var(--gold-2)">From the catalogue</span><h2 class="d lg r d1" style="margin-top:20px">Seen on <i>Shopee</i></h2></div>
-    <div class="gal r d2">{gal}</div>
-  </div>
-</section>
-
-<section id="trust">
-  <div class="ph"></div>
-  <div class="wrap">
-    <div class="stars r">★★★★★</div>
-    <h2 class="d lg r d1">{cta}</h2>
-    <p class="r d2">{ctap}</p>
-    <div class="acts r d3">
-      <a class="btn fill" href="https://shopee.co.id/product/1250916592/{ctaid}" target="_blank" rel="noopener">Order now</a>
-      <a class="btn white" href="#" data-wa="Hello WON, I have a question about {name}.">Speak with us</a>
-    </div>
-  </div>
-</section>
-
-<footer><div class="wrap">
-  <div class="foot">
-    <div><a class="logo" href="./"><img src="img/logo-white.png" alt="WON"></a><p>Window of Nature. A feed mill in Bandung, West Java, crafting small-batch, preservative-free nutrition for rabbits, guinea pigs, poultry and livestock.</p></div>
-    <div><h4>Explore</h4>{navfoot}</div>
-    <div><h4>Shop</h4><a href="https://shopee.co.id/wonfeed_" target="_blank" rel="noopener">Shopee</a><a href="#" id="f-tt" target="_blank" rel="noopener">TikTok Shop</a><a href="#" data-wa="Hello WON, I would like to place an order.">WhatsApp</a></div>
-    <div><h4>Contact</h4><a href="#" id="f-ig" target="_blank" rel="noopener">Instagram</a><a href="mailto:hello@windowofnature.co.id">hello@windowofnature.co.id</a><a href="#">Bandung, West Java</a></div>
-  </div>
-  <div class="copy"><span>© 2026 WON · Window of Nature</span><span>Milled with care in Bandung</span></div>
-  {credit}
-</div></footer>
-<a class="wa-float" href="#" data-wa="Hello WON, I have a question." aria-label="WhatsApp">{wa}</a>
-<script src="site.js"></script>
-</body>
-</html>
-'''
-import re
-for slug,p in PAGES.items():
-    band=''.join(f'<div><b>{b}</b><span>{s}</span></div>' for b,s in p['band'])
-    cards=''.join(f'<a class="prod r" href="https://shopee.co.id/product/1250916592/{i}" target="_blank" rel="noopener"><div class="stage"><img src="cut/{img}.png" alt="{n}" loading="lazy"></div><div class="k">{k}</div><h3>{n}</h3><p>{d}</p><span class="go">View on Shopee <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M8 7h9v9"/></svg></span></a>' for img,k,n,d,i in p['cards'])
-    facts=''.join(f'<div class="fact r"><b>{b}</b><span>{s}</span><p>{d}</p></div>' for b,s,d in p['facts'])
-    gal=''.join(f'<a href="https://shopee.co.id/product/1250916592/{i}" target="_blank" rel="noopener"><img src="{g.replace("../","") if g.startswith("../") else "img/"+g}.jpg" alt="WON on Shopee" loading="lazy"></a>' for g,i in p['gal'])
-    html=TPL.format(title=p['title'],leadplain=re.sub('<[^>]+>','',p['lead']),hero=p['hero'],pos=p['pos'],nav=NAV,navfoot=NAV.replace('<a ','<a class="fl" '),eyebrow=p['eyebrow'],h1=p['h1'],lead=p['lead'],ctaid=p['ctaid'],band=band,sec=p['sec'],ncards=len(p['cards']),cards=cards,facts=facts,gal=gal,cta=p['cta'],ctap=p['ctap'],name=p['title'].split(' — ')[0],credit=(f'<div class="credits">{p["credit"]}</div>' if p['credit'] else ''),wa=WA)
-    open(f'{slug}.html','w').write(html); print('wrote',slug)
+ROOT=Path(__file__).parent
+BASE='https://glenngmgm.github.io/windowofnature/'
+PHONE='6281391779997'
+SHOP='https://shopee.co.id/wonfeed_'
+def wa(msg):return 'https://wa.me/'+PHONE+'?text='+quote(msg)
+def product(id):return 'https://shopee.co.id/product/1250916592/'+id
+ARROW='<span class="arrow" aria-hidden="true">↗</span>'
+def btn(label,url,style='btn',external=False):return f'<a class="{style}" href="{escape(url)}"'+(' target="_blank" rel="noopener noreferrer"' if external else '')+f'>{label} {ARROW}</a>'
+def img(src,alt,cls='',eager=False):return f'<img src="{src}" alt="{escape(alt)}" class="{cls}" '+('fetchpriority="high"' if eager else 'loading="lazy"')+' decoding="async">'
+NAV=[('rabbit.html','Rabbit feed'),('shori.html','Shōri'),('hay.html','Alfalfa hay'),('pellets.html','Green hay pellets'),('poultry.html','Poultry feed')]
+def nav_links(active):return ''.join(f'<a href="{u}"'+(' aria-current="page"' if u==active else '')+f'>{n} <span aria-hidden="true">↗</span></a>' for u,n in NAV)
+def header(active):return f'''<a class="skip" href="#main">Skip to content</a><header class="site-header"><div class="nav-shell"><nav class="nav-left" aria-label="Main navigation"><details class="collection-nav"><summary>Our collection <span aria-hidden="true">⌄</span></summary><div class="collection-menu">{nav_links(active)}</div></details><a class="nav-link" href="why-alfalfa.html">Why alfalfa</a></nav><a class="brand" href="index.html" aria-label="Window of Nature home">{img('img/logo-navy.png','WON Window of Nature',eager=True)}</a><div class="nav-right"><a class="nav-link" href="feedmill.html">Our story</a>{btn('Business enquiries','wholesale.html')}</div><button class="menu-toggle" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open navigation">Menu <span aria-hidden="true">＋</span></button></div><nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">{nav_links(active)}<a href="why-alfalfa.html">Why alfalfa</a><a href="feedmill.html">Our story</a><a href="wholesale.html">Business enquiries</a>{btn('Shop on Shopee',SHOP,'text-link',True)}</nav></header>'''
+def footer():return f'''<footer class="site-footer"><div class="wrap"><div class="footer-grid"><div class="footer-brand"><a class="brand" href="index.html">{img('img/logo-white.png','WON Window of Nature','footer-logo')}</a><p>Considered nutrition, from small companions to exceptional horses. Feed from Bandung. Alfalfa from Italy.</p></div><div><h3>The collection</h3>{nav_links('')}</div><div><h3>Stay connected</h3><a href="wholesale.html">Equestrian & wholesale</a><a href="{wa('Hello WON, I would like to make an enquiry.')}" target="_blank" rel="noopener noreferrer">WhatsApp +62 813-9177-9997</a><a href="{SHOP}" target="_blank" rel="noopener noreferrer">Shop on Shopee ↗</a><a href="https://www.instagram.com/wonfeed.official" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="feedmill.html">Bandung, West Java</a></div></div><div class="footer-bottom"><span>© 2026 Window of Nature</span><span>Thoughtfully selected. Carefully fed.</span><a href="credits.html">Photography & sources</a></div></div></footer>'''
+def page(file,title,desc,body,theme='',og='photos/equestrian-pasture.jpg'):
+ schema={'@context':'https://schema.org','@type':'Organization','name':'Window of Nature','url':BASE,'logo':BASE+'img/logo-navy.png','telephone':'+6281391779997','sameAs':[SHOP,'https://www.instagram.com/wonfeed.official']}
+ html=f'''<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{escape(title)} | Window of Nature</title><meta name="description" content="{escape(desc)}"><link rel="canonical" href="{BASE+file}"><meta property="og:title" content="{escape(title)} | Window of Nature"><meta property="og:description" content="{escape(desc)}"><meta property="og:type" content="website"><meta property="og:url" content="{BASE+file}"><meta property="og:image" content="{BASE+og}"><meta name="theme-color" content="#20392e"><link rel="icon" href="img/mark-navy.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="site.css"><script type="application/ld+json">{json.dumps(schema)}</script></head><body class="{theme}">{header(file)}<main id="main">{body}</main>{footer()}<script src="site.js" defer></script></body></html>'''
+ (ROOT/file).write_text(html)
+def heading(kicker,title,desc=''):return f'<div class="section-head"><div class="reveal"><span class="eyebrow">{kicker}</span><h2>{title}</h2></div>'+ (f'<p class="reveal">{desc}</p>' if desc else '')+'</div>'
+def cta(title,desc,label='Speak with WON',msg='Hello WON, I have a question about your products.'):
+ return f'<section class="quote-panel dark"><div class="wrap reveal"><span class="eyebrow">A conversation starts here</span><h2>{title}</h2><p class="muted">{desc}</p><div class="actions">{btn(label,wa(msg),"btn light",True)}{btn("Explore the collection","index.html#collection","text-link")}</div></div></section>'
+def strip(items):return '<div class="wrap spec-strip">'+''.join(f'<div><b>{b}</b><span>{s}</span></div>' for b,s in items)+'</div>'
+def hero(kicker,title,lead,images,primary,secondary=None,art=''):
+ return f'<section class="page-hero"><div class="wrap page-hero-grid"><div><span class="eyebrow">{kicker}</span><h1>{title}</h1><p class="lede">{lead}</p><div class="actions">{btn(*primary)}{btn(*secondary) if secondary else ""}</div><div class="index">WON / The collection</div></div><div class="product-hero-art {art}">{images}</div></div></section>'
+def card(image,kicker,title,desc,sizes,id):
+ return f'<article class="product-card reveal"><div class="product-image">{img(image,title)}</div><div class="product-info"><span class="eyebrow">{kicker}</span><h3>{title}</h3><p>{desc}</p><div class="sizes">'+''.join(f'<span class="size">{s}</span>' for s in sizes)+f'</div>{btn("View product",product(id),"text-link",True)}</div></article>'
+def principles(rows):return '<div class="principles">'+''.join(f'<article class="principle reveal"><span class="n">0{i+1}</span><h3>{h}</h3><p>{p}</p></article>' for i,(h,p) in enumerate(rows))+'</div>'
+# HOME
+collection=[('rabbit.html','cut/bundle-premium-super.png','01 / Rabbit','Super & Premium','Two alfalfa-based formulas. One thoughtful approach to rabbit feed.','#e2e6e4'),('shori.html','cut/shori-vitc.png','02 / Rabbits & guinea pigs','Shōri','A Japanese-inspired daily blend, with added vitamin C.','#efe0d1'),('hay.html','cut/hay-italia-500g.png','03 / Horses & small animals','Italian Alfalfa','Selected forage, with a place in well-balanced feeding programmes.','#e0e3ce'),('pellets.html','cut/pellet-hay.png','04 / Small companions','Green Hay Pellets','Alfalfa in a practical 250 g resealable pouch.','#e4e7d8'),('poultry.html','cut/ayam-petelur-25kg.png','05 / Poultry','Super Chicken Feed','Starter and layer feed, with sizes for a home flock or a farm.','#ede2cb')]
+colhtml=''.join(f'<a class="collection-item reveal" href="{u}" style="--tint:{t}"><div class="stage">{img(im,n)}</div><div class="meta"><h3>{n}</h3>{ARROW}</div><div class="small">{k}</div><p>{d}</p></a>' for u,im,k,n,d,t in collection)
+home=f'''<section class="home-hero"><div class="wrap"><div class="home-hero-grid"><div><span class="eyebrow">Window of Nature / Bandung, Indonesia</span><h1>Good nature.<br><em>Exceptional</em><br>nourishment.</h1><p class="lede">From the smallest companions to the horses that move us. Thoughtful feed and Italian alfalfa for the animals in your care.</p><div class="actions">{btn('Discover our collection','#collection','btn light')}{btn('For equestrian businesses','wholesale.html','text-link')}</div></div><figure class="hero-art">{img('photos/equestrian-pasture.jpg','Horses in an open green pasture',eager=True)}{img('cut/hay-italia-500g.png','WON Italian alfalfa hay','floating-pack',True)}<figcaption>Rooted in nature.<br>Chosen with purpose.</figcaption></figure></div><div class="hero-bottom"><span>Italian alfalfa · Animal nutrition</span><span>For homes, stables & farms</span><a href="#introduction">Discover WON ↓</a></div></div></section>
+<section class="section" id="introduction"><div class="wrap intro-line"><span class="eyebrow reveal">The nature of good feeding</span><h2 class="reveal">Care begins with what<br>we <em>choose to feed.</em></h2></div></section>
+<section class="section" id="collection" style="padding-top:0"><div class="wrap">{heading('Our collection','A world of <em>well-fed lives.</em>','A dedicated collection for every kind of care. Explore the formula, the forage and the right pack.')}<div class="collection-grid">{colhtml}</div></div></section>
+<section class="section soft"><div class="wrap editorial"><figure class="editorial-media reveal">{img('photos/equestrian-pasture.jpg','Two horses in pasture, shown in the full landscape composition')}<figcaption>Equestrian care starts with a considered forage programme.</figcaption></figure><div class="editorial-copy reveal"><span class="eyebrow">For stables. For studs. For the long run.</span><h2>Extraordinary horses.<br><em>Considered forage.</em></h2><p class="lede">Italian alfalfa deserves a place in the conversation about equine nutrition. We help equestrian businesses explore the right supply for their feeding programme, from pack selection to purchasing requirements.</p><div class="actions">{btn('Explore Italian alfalfa','hay.html','text-link')}{btn('Discuss supply','wholesale.html','text-link')}</div></div></div></section>
+<section class="section"><div class="wrap">{heading('The WON approach','Details that <em>make a difference.</em>')}{principles([('Know the product','Clear product types, net weights and formula details make choosing simpler.'),('Feed with purpose','A rabbit, a laying hen and a working horse have different needs. Our collections keep those differences in view.'),('Talk to the people behind it','From a single pouch to a business enquiry, speak directly with Window of Nature in Bandung.')])}</div></section>
+<section class="section dark"><div class="wrap editorial"><div class="editorial-copy reveal"><span class="eyebrow">The feedmill / Bandung</span><h2>Close to the feed.<br><em>Closer to the care.</em></h2><p class="lede">Window of Nature brings our WON feed ranges, Shōri and imported Italian alfalfa together. One collection, created around the many ways we care for animals.</p><div class="actions">{btn('Meet Window of Nature','feedmill.html','text-link')}</div></div><figure class="editorial-media reveal">{img('photos/rabbit-white-grass.jpg','White rabbit sitting in grass, with both ears fully visible')}</figure></div></section>
+{cta('Let’s feed something <em>extraordinary.</em>','Find a product for your animals, or start a supply conversation for your business.')}'''
+page('index.html','Premium Animal Nutrition & Italian Alfalfa','WON feed and Italian alfalfa for rabbits, guinea pigs, poultry and horses. Discover the collection or discuss equestrian and wholesale supply.',home)
+# RABBIT
+rabbit=hero('01 / Rabbit feed','Super care.<br><em>Premium choice.</em>','Two alfalfa-based rabbit feeds with habbatusauda. Explore WON Super and WON Premium side by side, with clear nutrition and pack choices.',img('cut/super-1kg.png','WON Super 1 kg rabbit feed',eager=True)+img('cut/premium-1kg.png','WON Premium 1 kg rabbit feed',eager=True),('Explore the formulas','#formulas'),('Ask us about rabbit feed',wa('Hello WON, I would like help choosing rabbit feed.'),'text-link',True),'duo')
+rabbit+=strip([('2','Rabbit feed formulas'),('Alfalfa','With habbatusauda'),('1 kg','Retail pouches'),('20 kg','WON Super mill sack')])
+rabbit+=f'<section class="section" id="formulas"><div class="wrap">{heading("The rabbit collection","Two formulas.<br><em>One considered choice.</em>")}<div class="product-grid two">{card("cut/super-1kg.png","WON Super","Super Rabbit Feed","Alfalfa and habbatusauda in a convenient pellet format. Available in a retail pouch and a larger sack for breeders and farms.",["1 kg","20 kg"],"27251151691")}{card("cut/premium-1kg.png","WON Premium","Premium Rabbit Feed","An alfalfa-based pellet with a distinct nutrient profile. Compare the declared protein, fibre and mineral values to choose for your feeding plan.",["1 kg"],"26728134263")}</div></div></section>'
+rabbit+='''<section class="section soft"><div class="wrap"><span class="eyebrow">Declared nutrition</span><h2>The detail behind <em>the choice.</em></h2><table class="nutrient-table"><caption class="note">Selected values from WON product listings</caption><thead><tr><th scope="col">Nutrient</th><th scope="col">WON Super</th><th scope="col">WON Premium</th></tr></thead><tbody><tr><td>Crude protein, minimum</td><td>18%</td><td>20%</td></tr><tr><td>Crude fibre, minimum</td><td>15%</td><td>14%</td></tr><tr><td>Calcium, minimum</td><td>0.70%</td><td>0.80%</td></tr><tr><td>Phosphorus, minimum</td><td>0.40%</td><td>0.45%</td></tr></tbody></table><p class="note">Choose pellets within an age-appropriate diet. For adult pet rabbits, grass hay should normally be the main forage; discuss alfalfa-based feed with your veterinarian when planning the diet.</p><div class="actions">'''+btn('Understand alfalfa','why-alfalfa.html#small-animals','text-link')+'</div></div></section>'
+rabbit+=cta('A little care.<br><em>Every single day.</em>','Speak with WON about the rabbit range or order through our Shopee store.',msg='Hello WON, I would like to order rabbit feed.')
+page('rabbit.html','WON Super & Premium Rabbit Feed','Compare WON Super and Premium rabbit feed, including declared nutrition and 1 kg or 20 kg pack options.',rabbit,'theme-rabbit','cut/bundle-premium-super.png')
+# SHORI
+shori=hero('02 / Shōri · Rabbits & guinea pigs','Small companions.<br><em>Daily victories.</em>','Shōri Premium Daily Blend brings a Japanese-inspired attention to detail to feeding time. Small pellets, added vitamin C, and a 1 kg pouch for rabbits and guinea pigs.',img('cut/shori-vitc.png','Shōri Daily Blend yellow and pink 1 kg pouch',eager=True),('Discover Shōri','#daily-blend'),('Shop Shōri',product('51350921733'),'text-link',True))
+shori+=strip([('1 kg','Net weight'),('+ Vitamin C','Added to the blend'),('Small','Pellet format'),('Shōri','Daily blend')])
+shori+=f'<section class="section" id="daily-blend"><div class="wrap editorial"><figure class="editorial-media reveal">{img("photos/guinea-pair.jpg","Guinea pigs resting together in grass")}</figure><div class="editorial-copy reveal"><span class="eyebrow">A thoughtful daily ritual</span><h2>Made for their<br><em>little moments.</em></h2><p class="lede">The name Shōri takes inspiration from the Japanese word for victory. Its daily blend pairs a small pellet format with vitamin C for rabbit and guinea pig households.</p><dl class="benefit-list"><div><dt>Vitamin C</dt><dd>An added nutrient in the blend, especially relevant to guinea pigs.</dd></div><div><dt>Small bites</dt><dd>A pellet format designed to be easy for small mouths to eat.</dd></div><div><dt>1 kg</dt><dd>A clearly sized pouch for your feeding routine.</dd></div></dl><div class="actions">{btn("View Shōri",product("51350921733"),"text-link",True)}</div></div></div></section>'
+shori+=cta('Care, in the<br><em>smallest details.</em>','Discover Shōri or talk to us about your rabbit and guinea pig feeding routine.',msg='Hello WON, I would like to order Shori Daily Blend.')
+page('shori.html','Shōri Premium Daily Blend','Shōri Rabbit & Guinea Pig Daily Blend with vitamin C, in a 1 kg pouch.',shori,'theme-shori','cut/shori-vitc.png')
+# ALFALFA
+hay=hero('03 / Italian alfalfa · Forage collection','The foundation<br>of <em>exceptional care.</em>','Italian-grown alfalfa for considered feeding programmes. From small-animal care to professional equestrian yards, discover a nutrient-rich forage with a purpose.',img('cut/hay-italia-500g.png','WON Italian alfalfa bale shown in full',eager=True),('Equestrian supply','wholesale.html'),('Why alfalfa','why-alfalfa.html','text-link'))
+hay+=strip([('Italy','Grown at origin'),('20%','Listed protein'),('<12%','Listed moisture'),('3','Core pack sizes')])
+hay+=f'<section class="section"><div class="wrap editorial"><figure class="editorial-media reveal">{img("photos/equestrian-pasture.jpg","Horses in a green pasture")}<figcaption>Forage selection belongs at the centre of the feeding programme.</figcaption></figure><div class="editorial-copy reveal"><span class="eyebrow">Beyond the small-animal aisle</span><h2>A place in the<br><em>professional stable.</em></h2><p class="lede">Alfalfa is a legume forage valued for its protein, calcium and digestible energy. It can complement grass hay in a balanced equine ration, with the proportion chosen for the horse’s workload, life stage and overall diet.</p><p class="note">Forage analysis and your equine nutritionist’s ration plan should guide selection. Product listing values are not a substitute for a current batch analysis.</p><div class="actions">{btn("Discuss your stable’s requirements","wholesale.html","text-link")}</div></div></div></section>'
+hay+=f'<section class="section soft" id="sizes"><div class="wrap">{heading("The alfalfa range","One forage.<br><em>A choice of scale.</em>","Choose 500 g, 1 kg or 11 kg, or speak with us about your business requirements.")}<div class="product-grid">{card("cut/hay-italia-500g.png","Italian alfalfa / 500 g","The small pack","A compact pack for a considered small-animal feeding plan.",["500 g"],"29611529965")}{card("img/hay-italia-1kg.jpg","Italian alfalfa / 1 kg","The everyday pack","Italian alfalfa in a convenient middle size.",["1 kg"],"29611524857")}{card("cut/hay-italia-11kg.png","Italian alfalfa / 11 kg","The larger pack","For larger requirements. Contact us to discuss pack quantities, delivery and availability.",["11 kg"],"24586140324")}</div></div></section>'
+hay+=f'<section class="section"><div class="wrap">{heading("Choose with understanding","Why <em>alfalfa?</em>")}{principles([("A legume forage","Alfalfa typically contains more protein and calcium than grass hay. Its role depends on the animal and the complete ration."),("More than one audience","Relevant to equine feeding programmes and selected small-animal life stages. Different animals need different proportions."),("The details matter","Origin, nutrient profile, condition and storage all help inform a forage purchase. Discuss your requirements before ordering.")])}<div class="actions">{btn("Read the alfalfa guide","why-alfalfa.html","text-link")}</div></div></section>'
+hay+=cta('Good forage.<br><em>A serious conversation.</em>','For equestrian centres, stud farms, training yards and distributors. Tell us your destination and anticipated requirements.','Discuss alfalfa supply','Hello WON, I would like to discuss Italian alfalfa supply for horses.')
+page('hay.html','Italian Alfalfa Hay for Horses & Small Animals','Italian alfalfa hay in 500 g, 1 kg and 11 kg packs. Discuss equestrian, stable and wholesale supply with WON.',hay,og='cut/hay-italia-500g.png')
+# PELLETS
+pellets=hero('04 / Green Hay Pellets','Nature, in<br><em>a smaller form.</em>','Alfalfa hay in a practical pellet format. Green Hay Pellets pair easy portioning with a resealable 250 g pouch for small-animal feeding routines.',img('cut/pellet-hay.png','WON Green Hay Pellets 250 g resealable pouch',eager=True),('Explore the pellets','#pellet-details'),('Shop Green Hay Pellets',product('44151924570'),'text-link',True))
+pellets+=strip([('250 g','Net weight'),('Alfalfa','Hay-based pellets'),('Resealable','Zip closure'),('Compact','Easy to portion')])
+pellets+=f'<section class="section" id="pellet-details"><div class="wrap editorial"><figure class="editorial-media reveal">{img("img/pellet-hay.jpg","Green Hay Pellets original product photography, uncropped")}</figure><div class="editorial-copy reveal"><span class="eyebrow">Convenience, considered</span><h2>The alfalfa you know.<br><em>A format to fit.</em></h2><p class="lede">A compact way to offer alfalfa, with a zip closure that makes the pouch easy to store between feeds. The declared 250 g is the product’s net weight.</p><p class="note">Pellets and long-stem hay have different roles. For rabbits and guinea pigs, plan their use alongside suitable hay and the animal’s wider diet.</p><div class="actions">{btn("Learn about alfalfa","why-alfalfa.html#small-animals","text-link")}</div></div></div></section>'
+pellets+=cta('A thoughtful addition<br>to <em>feeding time.</em>','Order the 250 g pouch or speak with us about the Green Hay Pellets range.',msg='Hello WON, I would like to order Green Hay Pellets 250 g.')
+page('pellets.html','Green Hay Pellets 250 g','WON Green Hay Pellets: alfalfa in a practical pellet format, in a resealable 250 g net-weight pouch.',pellets,'theme-pellets','cut/pellet-hay.png')
+# POULTRY
+poultry=hero('05 / WON Super Chicken Feed','Care for<br><em>the whole flock.</em>','Starter and layer feed from Window of Nature. Choose the feed type for the stage, then the pack size for your flock.',img('cut/ayam-starter.png','WON Super Chicken Feed 1 kg pouch',eager=True)+img('cut/ayam-petelur-25kg.png','WON Super Chicken Feed 25 kg sack',eager=True),('Explore the range','#poultry-range'),('Farm enquiries',wa('Hello WON, I would like to discuss chicken feed for my farm.'),'text-link',True),'duo')
+poultry+=strip([('Starter','Crumble / pellet'),('Layer','Fine mash'),('1 kg','Retail pack'),('25 kg','Farm sack')])
+poultry+=f'<section class="section" id="poultry-range"><div class="wrap">{heading("The poultry collection","The right feed.<br><em>For the right stage.</em>")}<div class="product-grid two">{card("cut/ayam-starter.png","Starter feed","A considered start","A crumble / pellet texture for the starter stage. Select the pack size around your flock’s needs.",["1 kg","25 kg"],"43403176817")}{card("cut/ayam-petelur-25kg.png","Layer feed","Made for laying hens","A fine mash feed for the laying stage, available for small flocks and larger farm requirements.",["1 kg","25 kg"],"26379151810")}</div></div></section>'
+poultry+=f'<section class="section soft"><div class="wrap editorial"><figure class="editorial-media reveal">{img("photos/hen-freerange.jpg","Free-range hen standing in grass, naturally framed")}</figure><div class="editorial-copy reveal"><span class="eyebrow">For homes and farms</span><h2>From a small flock<br>to <em>a daily operation.</em></h2><p class="lede">Keep purchasing straightforward: tell us the feed type, pack size and quantity you need. Our team can discuss current availability and delivery for your location.</p><div class="actions">{btn("Speak with WON",wa("Hello WON, I would like to order Super Chicken Feed."),"text-link",True)}</div></div></div></section>'
+poultry+=cta('Every flock deserves<br><em>thoughtful feeding.</em>','Speak directly with Window of Nature about starter and layer feed.',msg='Hello WON, I would like to order Super Chicken Feed.')
+page('poultry.html','WON Super Chicken Feed','WON Super Chicken Feed: starter and layer feed in 1 kg and 25 kg packs for home flocks and farms.',poultry,'theme-poultry','cut/ayam-petelur-25kg.png')
+# ALFALFA GUIDE
+why=f'''<div class="wrap"><section class="journal-hero"><span class="eyebrow">The forage journal / 01</span><h1>Why <em>alfalfa?</em><br>Start with<br>the foundation.</h1><p class="lede">Good feeding begins with understanding the forage. Alfalfa offers a different nutrient profile from grass hay—and that difference is what makes thoughtful selection important.</p></section><figure>{img('photos/equestrian-pasture.jpg','Horses in pasture, shown without a restrictive crop',eager=True)}</figure></div>
+<section class="section"><div class="wrap chapters"><aside aria-label="In this guide"><span class="eyebrow">In this guide</span><a href="#the-forage">01 / The forage</a><a href="#horses">02 / For horses</a><a href="#small-animals">03 / Small animals</a><a href="#buying-well">04 / Buying well</a></aside><div>
+<article class="chapter" id="the-forage"><span class="eyebrow">01 / Understand the plant</span><h2>A legume, <em>not a grass.</em></h2><p>Alfalfa, also known as lucerne, is a legume forage. Compared with many grass hays, it generally supplies more protein, calcium and energy. Those qualities can be useful where a feeding programme calls for them.</p><p>It is the complete diet that matters: the forage, any concentrates or supplements, and the needs of the individual animal.</p></article>
+<article class="chapter" id="horses"><span class="eyebrow">02 / Equine feeding programmes</span><h2>For horses with<br><em>different demands.</em></h2><p>Alfalfa can be part of a balanced ration for horses, including programmes with higher nutrient requirements. It is often considered alongside grass forage rather than as an automatic replacement for it.</p><h3>A programme, not a promise.</h3><p>Workload, body condition and life stage should guide the proportion. A horse at rest may meet its needs on good-quality grass hay, while another ration may benefit from alfalfa’s nutrient density.</p><p>Ask your equine nutritionist to evaluate the complete ration and the current forage analysis, including the calcium-to-phosphorus balance.</p><div class="actions">{btn('Talk about equestrian supply','wholesale.html','text-link')}</div></article>
+<article class="chapter" id="small-animals"><span class="eyebrow">03 / Rabbits & small companions</span><h2>Match the forage<br>to <em>the life stage.</em></h2><p>Alfalfa can be useful for young, growing rabbits and selected higher-demand life stages. Adult pet rabbits generally need unlimited grass hay as their main forage, with alfalfa considered according to their specific needs.</p><p>Rabbits and guinea pigs need species-appropriate diets. Use your veterinarian’s guidance when choosing alfalfa, pellets and the rest of the feeding routine.</p><div class="actions">{btn('Explore the alfalfa range','hay.html#sizes','text-link')}</div></article>
+<article class="chapter" id="buying-well"><span class="eyebrow">04 / A considered purchase</span><h2>Look beyond<br><em>the label.</em></h2><p>Good forage purchasing begins with a clear brief. Discuss the animal, the feeding plan, anticipated volume, delivery destination and the product information your team needs to make a decision.</p><dl class="benefit-list"><div><dt>Analysis</dt><dd>Review current forage values in the context of the whole ration.</dd></div><div><dt>Condition</dt><dd>Check that hay is dry, clean and free from visible mould or contamination.</dd></div><div><dt>Storage</dt><dd>Keep forage dry and protected, with a sensible stock rotation plan.</dd></div></dl></article>
+<div class="source-links"><a href="https://extension.umn.edu/agriculture/animals-and-livestock/horse/hay-in-horse-diets" target="_blank" rel="noopener noreferrer">Equine forage guidance · UMN Extension ↗</a><a href="https://www.merckvetmanual.com/all-other-pets/rabbits/diet-for-rabbits" target="_blank" rel="noopener noreferrer">Rabbit diet guidance · Merck Veterinary Manual ↗</a></div></div></div></section>
+{cta('Better questions.<br><em>Better feeding choices.</em>','Explore the Italian alfalfa range or discuss the requirements of your stable, farm or business.','Discuss alfalfa','Hello WON, I would like to learn more about Italian alfalfa hay.')}'''
+page('why-alfalfa.html','Why Alfalfa? A Guide for Horses & Small Animals','Understand alfalfa forage, its role in equine diets, small-animal life stages, and what to consider when buying hay.',why)
+# WHOLESALE
+wholesale=hero('Equestrian & wholesale / Direct to WON','For those who<br>care <em>at scale.</em>','For equestrian centres, stud farms, training yards, farms and distributors. Start a direct conversation about Italian alfalfa and the requirements of your business.',img('photos/equestrian-pasture.jpg','Horses in pasture, pictured as an equestrian lifestyle scene',eager=True),('Discuss your requirements','#enquire'),('Explore our alfalfa','hay.html','text-link'),'photo')
+wholesale+=f'<section class="section"><div class="wrap">{heading("A more considered supply conversation","Built around<br><em>your operation.</em>")}{principles([("Your feeding programme","Share the species, the number of animals and the role alfalfa will play in the ration."),("Your purchasing needs","Tell us the pack format, estimated volume and ordering frequency you are considering."),("Your destination","Confirm your city and delivery needs so we can discuss availability and logistics with you.")])}</div></section>'
+wholesale+='''<section class="section soft" id="enquire"><div class="wrap enquiry-grid"><div><span class="eyebrow">Let’s talk supply</span><h2>A considered<br><em>first conversation.</em></h2><p>Give us a little context. We’ll prepare your enquiry for WhatsApp, where you can review and send it directly to WON.</p><p class="note">No enquiry is sent automatically. Availability, quantities and delivery are confirmed directly with our team.</p></div><form class="enquiry-form" id="supply-enquiry"><div class="field"><label for="name">Your name *</label><input id="name" name="name" autocomplete="name" required maxlength="100"></div><div class="field"><label for="company">Company or stable *</label><input id="company" name="company" autocomplete="organization" required maxlength="150"></div><div class="field"><label for="business">Business type</label><select id="business" name="business"><option>Equestrian centre</option><option>Stud farm</option><option>Training or racing yard</option><option>Farm or breeder</option><option>Distributor or retailer</option><option>Other</option></select></div><div class="field"><label for="city">Delivery city *</label><input id="city" name="city" autocomplete="address-level2" required maxlength="150"></div><div class="field full"><label for="volume">Estimated quantity and frequency *</label><input id="volume" name="volume" placeholder="For example: 20 packs of 11 kg per month" required maxlength="200"></div><div class="field full"><label for="details">Anything else we should know?</label><textarea id="details" name="details" maxlength="2000" placeholder="Your animals, preferred format, timing or product information needed"></textarea></div><div class="full"><button class="btn" type="submit">Prepare my enquiry <span aria-hidden="true">↗</span></button></div><p class="form-status full" role="status" aria-live="polite"></p><a class="btn full hidden" id="prepared-enquiry" target="_blank" rel="noopener noreferrer">Review in WhatsApp ↗</a><noscript><p>You can contact us directly on WhatsApp using the link below.</p></noscript></form></div><div class="wrap" style="margin-top:38px">'''+btn('Or contact WON directly',wa('Hello WON, I would like to discuss equestrian or wholesale supply.'),'text-link',True)+'''</div></section>'''
+wholesale+=f'<section class="section"><div class="wrap"><div class="section-head"><span class="eyebrow">Before we begin</span><h2>A few useful <em>details.</em></h2></div><div class="faq"><details><summary>Can I enquire about alfalfa for horses?</summary><p>Yes. Share the size of your operation, destination and planned requirements. We can discuss the current alfalfa range and the product information your nutrition team needs.</p></details><details><summary>Which pack sizes are available?</summary><p>Our core alfalfa range is 500 g, 1 kg and 11 kg. For a business order, enquire about quantities, current availability and delivery to your location.</p></details><details><summary>Do you publish wholesale prices?</summary><p>We discuss pricing directly, based on the product and your order requirements. Send an enquiry to start the conversation.</p></details><details><summary>Can I speak with someone before ordering?</summary><p>Yes. All enquiries and orders go to WON on WhatsApp at +62 813-9177-9997.</p></details></div></div></section>'
+page('wholesale.html','Equestrian & Wholesale Alfalfa Supply','Discuss Italian alfalfa supply for equestrian centres, stud farms, training yards and distributors. Contact WON directly on WhatsApp.',wholesale)
+# FEEDMILL
+story=hero('Window of Nature / Bandung, West Java','Rooted in nature.<br><em>Made for care.</em>','WON is Window of Nature, our feedmill in Bandung. Our collection brings together rabbit and poultry feed, Shōri for small companions, and imported Italian alfalfa.',img('banners/b2.jpg','Window of Nature brand illustration, presented without cropping',eager=True),('Explore the collection','index.html#collection'),('Speak with WON',wa('Hello WON, I would like to know more about Window of Nature.'),'text-link',True),'photo')
+story+=f'<section class="section"><div class="wrap intro-line"><span class="eyebrow reveal">One home for the collection</span><div class="reveal"><h2>Many kinds of animals.<br><em>One commitment to care.</em></h2><p class="lede" style="margin-top:32px">The way we feed an animal is part of the way we care for it. At Window of Nature, our range makes space for different species, life stages and feeding routines—from a pet at home to a professional stable.</p></div></div></section><section class="section soft"><div class="wrap">{heading("From WON to your world","Find your <em>collection.</em>")}<div class="collection-grid">{colhtml}</div></div></section>'
+story+=cta('A direct line<br>to <em>Window of Nature.</em>','For product questions, orders and business enquiries, our team is one conversation away.',msg='Hello WON, I would like to discuss your products.')
+page('feedmill.html','Our Story & Feedmill in Bandung','Meet Window of Nature, the Bandung feedmill behind WON feed and the home of Shōri and Italian alfalfa.',story)
+# Credits, evidence and licences
+credits='''<section class="section"><div class="wrap credits-list"><span class="eyebrow">Photography & references</span><h1>With <em>thanks.</em></h1><p style="margin-top:40px">Product photography, packaging and WON banners belong to Window of Nature and are sourced from the company’s website and Shopee listings.</p><p>Equestrian pasture photograph by <a href="https://unsplash.com/photos/two-horses-graze-in-a-scenic-green-pasture-yJWwWF_CeDM">Zooey Li on Unsplash</a>, used under the <a href="https://unsplash.com/license">Unsplash License</a>. It is an illustrative equestrian scene, not a photograph of a WON facility or customer.</p><p>Existing animal photographs are retained from the original website’s CC0 collection. The existing “Blanc De Hotot” photograph by The_only_true_editor is licensed CC BY-SA 4.0; that photograph is retained in the repository but is not used in this redesign.</p><p>The alfalfa guide draws on <a href="https://extension.umn.edu/agriculture/animals-and-livestock/horse/hay-in-horse-diets">University of Minnesota Extension’s horse-forage guidance</a> and <a href="https://www.merckvetmanual.com/all-other-pets/rabbits/diet-for-rabbits">Merck Veterinary Manual’s rabbit-diet guidance</a>. General education does not replace a ration plan for the individual animal.</p><p>Listed product nutrition is taken from WON product descriptions. Review current packaging and request the relevant product information before making a purchasing or feeding decision.</p></div></section>'''
+page('credits.html','Photography & Sources','Photography credits and nutrition references for the Window of Nature website.',credits)
+files=['index.html','rabbit.html','shori.html','hay.html','pellets.html','poultry.html','why-alfalfa.html','wholesale.html','feedmill.html','credits.html']
+(ROOT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join('<url><loc>'+BASE+f+'</loc></url>' for f in files)+'</urlset>')
+(ROOT/'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: '+BASE+'sitemap.xml\n')
+print('Generated',len(files),'pages')
