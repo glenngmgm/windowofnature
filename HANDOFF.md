@@ -32,6 +32,10 @@ Fallback URL while DNS propagates: https://glenngmgm.github.io/windowofnature/
 Glenn tried a Codex redesign (commits 159d765, f2f11a4, c26b162: forest green/editorial, ten pages incl. pellets, why-alfalfa, wholesale, credits). He disliked it and asked for this design back. The commit after c26b162 restores this design and borrows only: the confirmed WhatsApp number, no-email rule, the horse/stable enquiry section on the Hay page (`photos/equestrian-pasture.jpg`, Zooey Li on Unsplash, credited under the photo), per-product colour backdrops (`tint`/`disc` in gen_pages.py), robots.txt and sitemap.xml. Codex's version stays in git history if anything else is wanted from it.
 
 
+## Photo changes (26 Sep 2026)
+- Glenn disliked `rabbits-hay` (brown rabbits with a bowl); it is no longer used anywhere. Replacements: `pellets-hands` (home Feedmill tile, feedmill 'What we tailor'), `pellets-bowl` (feedmill hero), `cattle-feed` (home Wholesale 'Farms'), `sheep-meadow`, `horses-hay`, `cattle-feed` (feedmill species strip). Credits for the CC BY-SA ones are in the index and feedmill footers. `tile-rabbit.webp` is a crop of rabbit-white-grass with the rabbit on the left so the Super/Premium bags don't cover it.
+- Feedmill page names lambs, goats, cattle, horses etc. and lists species incl. crickets (WON's banner shows jangkrik feed).
+
 ## Performance & SEO setup (audit fixes, 26 Sep 2026)
 - All site images are WebP (`cut/*.webp`, `photos/*.webp`, `banners/*.webp`), capped at 1000 px (cutouts) / 1800 px (photos). Originals (png/jpg) stay in the repo as sources. When adding an image, convert to WebP and reference the .webp.
 - `finalize.py` adds version stamps to site.css/site.js links (`?v=<md5>`) so browsers never show stale styles after a deploy. It also stamps every `<img>` with width/height, lazy-loads all but the logo, and preloads the hero. `gen_pages.py` runs it automatically; run `python3 finalize.py` after hand-editing index.html or feedmill.html.

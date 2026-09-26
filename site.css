@@ -375,3 +375,17 @@ body.cc-open .wa-float{bottom:110px;transition:bottom .4s var(--ease)}
 .intro .cta{display:flex;gap:12px;justify-content:center;margin-top:34px;flex-wrap:wrap}
 @media(max-width:640px){.hero-banner{padding-top:92px}.hb-img{border-radius:18px}.intro h1{font-size:clamp(2.9rem,12vw,3.6rem)}}
 @media(max-width:640px){.intro .eyebrow{justify-content:center;letter-spacing:.18em;font-size:.78rem}.intro .eyebrow::before{display:none}}
+
+/* readable captions over bright photos (hay) */
+.line-tile::after,.tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,31,61,0) 38%,rgba(10,31,61,.55) 68%,rgba(10,31,61,.94) 100%),radial-gradient(70% 60% at 0% 100%,rgba(10,31,61,.55),transparent 70%);pointer-events:none}
+.tile .cap{background:none;z-index:2}
+.tile{position:relative}
+.line-tile .cap span,.tile .cap span{font-size:.95rem;font-weight:500;color:#F1DDA8}
+/* feedmill species photos */
+.spx{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:48px 0 10px}
+.spx figure{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:4/3;margin:0}
+.spx img{width:100%;height:100%;object-fit:cover;transition:transform 1.1s var(--ease)}
+.spx figure:hover img{transform:scale(1.05)}
+.spx figcaption{position:absolute;left:0;right:0;bottom:0;padding:26px 24px 20px;text-align:left;font-family:var(--serif);font-size:2rem;line-height:1;color:#fff;background:linear-gradient(180deg,transparent,rgba(10,31,61,.85))}
+@media(max-width:700px){.spx{grid-template-columns:1fr}}
+.fhero::after{background:linear-gradient(90deg,rgba(10,31,61,.86) 0%,rgba(10,31,61,.6) 45%,rgba(10,31,61,.2) 100%),linear-gradient(180deg,rgba(10,31,61,.25),rgba(10,31,61,.55))}
