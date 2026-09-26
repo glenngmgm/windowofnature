@@ -1,5 +1,5 @@
 /* ===== EDIT ===== */
-const CONFIG={whatsapp:'62XXXXXXXXXXX',instagram:'https://www.instagram.com/wonfeed.official',tiktok:'https://www.tiktok.com/@wonfeed_'};
+const CONFIG={whatsapp:'628112330890',instagram:'https://www.instagram.com/wonfeed.official',tiktok:'https://www.tiktok.com/@wonfeed_'};
 /* ================ */
 const P='https://shopee.co.id/product/1250916592/';
 const wa=m=>`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(m)}`;
