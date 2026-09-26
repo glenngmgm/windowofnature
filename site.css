@@ -364,3 +364,14 @@ body.cc-open .wa-float{bottom:110px;transition:bottom .4s var(--ease)}
 .legal a{color:var(--navy-2);text-decoration:underline;text-underline-offset:3px}
 .legal .btn{text-decoration:none;color:var(--ivory)}
 .legal code{font-size:.95em;background:var(--ivory-2);padding:1px 6px;border-radius:6px}
+
+/* ===== home hero: WON store banner, shown whole ===== */
+.hero-banner{padding:122px 0 0;background:var(--ivory)}
+.hb-img{width:100%;height:auto;aspect-ratio:1599/800;border-radius:30px;box-shadow:0 40px 90px rgba(11,22,38,.16)}
+.intro{padding:clamp(56px,7vw,96px) 0 clamp(64px,8vw,110px);background:var(--ivory)}
+.intro h1{margin:18px auto 22px;color:var(--ink)}
+.intro h1 i{color:var(--gold-dark)}
+.intro .lead{margin-inline:auto;max-width:48ch}
+.intro .cta{display:flex;gap:12px;justify-content:center;margin-top:34px;flex-wrap:wrap}
+@media(max-width:640px){.hero-banner{padding-top:92px}.hb-img{border-radius:18px}.intro h1{font-size:clamp(2.9rem,12vw,3.6rem)}}
+@media(max-width:640px){.intro .eyebrow{justify-content:center;letter-spacing:.18em;font-size:.78rem}.intro .eyebrow::before{display:none}}

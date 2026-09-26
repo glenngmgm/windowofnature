@@ -16,15 +16,21 @@ def fix_img(tag):
     tag=re.sub(r'\s(width|height|loading|decoding|fetchpriority)="[^"]*"','',tag)
     extra=''
     if d: extra+=f' width="{d[0]}" height="{d[1]}"'
-    if 'logo' in src: extra+=' decoding="async"'
+    if 'data-eager' in tag: extra+=' fetchpriority="high" decoding="async"'
+    elif 'logo' in src: extra+=' decoding="async"'
     else: extra+=' loading="lazy" decoding="async"'
     return tag[:-1].rstrip('/').rstrip()+extra+'>'
+import hashlib
+def asset_version(p): return hashlib.md5(open(p,'rb').read()).hexdigest()[:8]
+V={'site.css':asset_version('site.css'),'site.js':asset_version('site.js')}
 for f in glob.glob('*.html'):
     s=open(f).read(); o=s
     s=re.sub(r'<img\b[^>]*>',lambda m:fix_img(m.group(0)),s)
+    s=re.sub(r'href="site\.css(\?v=\w+)?"',f'href="site.css?v={V["site.css"]}"',s)
+    s=re.sub(r'src="site\.js(\?v=\w+)?"',f'src="site.js?v={V["site.js"]}"',s)
     # preload hero background (first url(...) in the page or the default home hero)
     m=re.search(r'\.hero \.ph\{\{?background-image:url\(([^)]+)\)',s)
-    hero=m.group(1) if m else ('photos/hero-white.webp' if f=='index.html' else None)
+    hero=m.group(1) if m else None
     if hero and 'rel="preload" as="image"' not in s:
-        s=s.replace('<link rel="stylesheet" href="site.css">',f'<link rel="preload" as="image" href="{hero}" fetchpriority="high">\n<link rel="stylesheet" href="site.css">',1)
+        s=re.sub(r'(<link rel="stylesheet" href="site\.css[^"]*">)',lambda m:f'<link rel="preload" as="image" href="{hero}" fetchpriority="high">\n'+m.group(1),s,count=1)
     if s!=o: open(f,'w').write(s); print('finalized',f)
