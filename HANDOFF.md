@@ -39,6 +39,11 @@ Glenn tried a Codex redesign (commits 159d765, f2f11a4, c26b162: forest green/ed
 - Analytics: GA4 is ON with Measurement ID `G-B29T22FFXQ` (`CONFIG.ga4` in site.js). Outbound clicks to Shopee/TikTok/WhatsApp/Instagram are tracked as `outbound_click` with channel/label/page.
 - Icons: img/favicon-32.png, img/apple-touch-icon.png, img/icon-192.png. robots.txt + sitemap.xml at root.
 
+
+## Cookie notice & privacy (UU PDP)
+- Google Analytics loads ONLY after the visitor taps Accept on the cookie notice (site.js, "analytics with consent"). Choice stored in localStorage `won-consent` (granted/denied). Decline deletes any `_ga` cookies. Footer "Cookie settings" reopens the notice on every page. Outbound click events fire only when consent is granted.
+- `privacy.html` explains what is collected, cookies, other services (GitHub Pages, Google Fonts, WhatsApp, Shopee/TikTok) and rights under UU No. 27/2022. Update its "Updated" date if anything changes.
+
 ## Claims (softened 26 Sep 2026, restore only with proof)
 - Hay h1 was "Indonesia's largest alfalfa importer" → "Italian alfalfa, imported direct"; band "#1 importer in Indonesia" → "Direct from Italy".
 - Feedmill "The first feedmill in Bandung…" → "A Bandung feedmill that formulates…"; band "1st in Bandung" → "Custom formulation".

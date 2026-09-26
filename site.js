@@ -26,15 +26,46 @@ if(heroph&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
   },{passive:true});
 }
 
-/* analytics: loads only when CONFIG.ga4 is set; records clicks to Shopee, TikTok, WhatsApp and Instagram */
+/* ===== analytics with consent (UU PDP) =====
+   Google Analytics loads ONLY after the visitor taps "Accept".
+   The choice is stored in this browser; "Cookie settings" in the footer reopens the notice. */
 window.dataLayer=window.dataLayer||[];
-function track(name,params){window.dataLayer.push({event:name,...params});if(window.gtag)gtag('event',name,params);}
-if(CONFIG.ga4){
-  const s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+CONFIG.ga4;document.head.appendChild(s);
-  window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config',CONFIG.ga4);
+const CONSENT_KEY='won-consent';
+function getConsent(){try{return localStorage.getItem(CONSENT_KEY)}catch(e){return null}}
+function setConsent(v){try{localStorage.setItem(CONSENT_KEY,v)}catch(e){}}
+function clearGACookies(){
+  const host=location.hostname,parts=host.split('.');
+  document.cookie.split(';').map(c=>c.split('=')[0].trim()).filter(n=>/^_ga/.test(n)).forEach(n=>{
+    for(let i=0;i<parts.length;i++){const dom=parts.slice(i).join('.');document.cookie=`${n}=; Max-Age=0; path=/; domain=${dom}`;}
+    document.cookie=`${n}=; Max-Age=0; path=/`;
+  });
 }
+let gaLoaded=false;
+function loadGA(){
+  if(gaLoaded||!CONFIG.ga4)return;gaLoaded=true;
+  window.gtag=function(){dataLayer.push(arguments)};
+  gtag('consent','default',{analytics_storage:'granted',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
+  gtag('js',new Date());gtag('config',CONFIG.ga4,{anonymize_ip:true});
+  const s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+CONFIG.ga4;document.head.appendChild(s);
+}
+function track(name,params){if(gaLoaded&&window.gtag)gtag('event',name,params);}
 document.addEventListener('click',e=>{
   const a=e.target.closest('a[href]');if(!a)return;const h=a.href;
   const ch=/shopee\./.test(h)?'shopee':/tiktok\.com/.test(h)?'tiktok':/wa\.me/.test(h)?'whatsapp':/instagram\.com/.test(h)?'instagram':null;
   if(ch)track('outbound_click',{channel:ch,label:(a.textContent||'').trim().slice(0,60),page:location.pathname});
 });
+
+function showNotice(){
+  if(document.getElementById('cc'))return;
+  const d=document.createElement('div');d.id='cc';d.setAttribute('role','dialog');d.setAttribute('aria-live','polite');d.setAttribute('aria-label','Cookie notice');
+  d.innerHTML='<p>We use analytics cookies to understand how visitors use this site, so we can improve it. No advertising. <a href="privacy.html">Privacy</a></p><div class="cc-acts"><button type="button" class="btn cc-no">Decline</button><button type="button" class="btn fill cc-yes">Accept</button></div>';
+  document.body.appendChild(d);document.body.classList.add('cc-open');
+  requestAnimationFrame(()=>d.classList.add('show'));
+  const close=v=>{setConsent(v);if(v==='denied')clearGACookies();d.classList.remove('show');document.body.classList.remove('cc-open');setTimeout(()=>d.remove(),400);if(v==='granted')loadGA();};
+  d.querySelector('.cc-yes').onclick=()=>close('granted');
+  d.querySelector('.cc-no').onclick=()=>close('denied');
+}
+document.querySelectorAll('[data-cookie-settings]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();if(getConsent()==='granted'&&gaLoaded){setConsent('');clearGACookies();location.reload();return;}showNotice();}));
+const choice=getConsent();
+if(choice==='granted')loadGA();
+else if(choice!=='denied')setTimeout(showNotice,1200);
