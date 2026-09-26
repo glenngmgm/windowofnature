@@ -8,12 +8,14 @@ Fallback URL while DNS propagates: https://glenngmgm.github.io/windowofnature/
 - Single static page: `index.html` (all CSS/JS inline). No build step.
 - English only, premium/minimal tone, image-led. No prices on the site (Glenn's call).
 - Every product links to its Shopee listing (`https://shopee.co.id/product/1250916592/<itemId>`).
-- Design cues borrowed from sarfatranch.com (big serif display type, italic accent words, WA + shop CTAs, marquee), re-skinned to WON's navy (#0D3B7A) + cream palette. Fonts: Fraunces + Plus Jakarta Sans (Google Fonts).
+- Design follows sarfatranch.com's structure (photo hero, stats band, product grid, story, 4 pillars, animal trio, B2B accordion, trust band, footer) in a premium palette: deep navy #0A1F3D, ivory #F5F1E9, champagne gold #C9A961. Fonts: Cormorant Garamond + Jost (Google Fonts). Copy is English, elevated register.
+- Logo: extracted from the Shopee shop banner (`img/logo-white.png`, `img/logo-navy.png`, `img/mark-*.png`).
+- `photos/` — CC0 stock photos from rawpixel/StockSnap via the Openverse API (no attribution required). hero-rabbit, rabbit-dutch, rabbit-close, rabbits-hay, guinea-grass, guinea-pair, guinea-gray, rooster, chick, hay-bales, hen-freerange, hens-flock.
 
 ## Images
 - `img/` — original Shopee listing photos (resized ≤1000px). `sec-*.jpg` are the secondary listing banners; six of them feed the gallery.
-- `cut/` — background-removed product cutouts (PNG) used everywhere on the page. Made locally with `rembg` (isnet-general-use; BiRefNet-lite re-run for the ones the first model chewed up: white chicken sacks, pale hay bales).
-- `cut2/` is gitignored scratch for cutout re-runs.
+- `cut/` — background-removed product cutouts (PNG). Made locally with `rembg` (venv in the session scratchpad; models cached in `~/.u2net`). isnet-general-use for most; u2net for hay bales / white sacks (isnet eats pale objects); birefnet-general-lite is best but ~15 min/image on this Mac.
+- `cut2/`, `cut3/` are gitignored scratch for cutout re-runs.
 - Shop logo/banner from Shopee CDN: `img/logo-square.jpg`, `img/logo-banner.jpg`.
 
 ## Editing
