@@ -5,12 +5,14 @@ Live: https://windowofnature.co.id (GitHub Pages, repo `glenngmgm/windowofnature
 Fallback URL while DNS propagates: https://glenngmgm.github.io/windowofnature/
 
 ## What it is
-- Single static page: `index.html` (all CSS/JS inline). No build step.
+- Static multi-page site, no build step. Shared `site.css` + `site.js` (CONFIG with WhatsApp/Instagram/TikTok, WA links, reveal animations, hero parallax).
+- Pages: `index.html` (home: hero, stats band, four product-line tiles, story with polaroids + Hay/Feedmill tiles, pillars, B2B accordion, trust, footer), `rabbit.html` (Super & Premium), `shori.html`, `hay.html` ("Indonesia's largest importer of alfalfa"), `poultry.html`, `feedmill.html` (custom formulation, "first in Bandung"). Each product page is a full-screen hero + stats + range cards + facts + Shopee banner gallery + CTA.
+- The four product pages are generated from `gen_pages.py` (edit the PAGES dict there, then `python3 gen_pages.py`). `feedmill.html` and `index.html` are hand-written.
 - English only, premium/minimal tone, image-led. No prices on the site (Glenn's call).
 - Every product links to its Shopee listing (`https://shopee.co.id/product/1250916592/<itemId>`).
 - Design follows sarfatranch.com closely (floating pill nav, full-bleed photo hero with huge serif headline, stats band, product grid, hay photo band, tilted polaroid story, 4 pillars, animal trio, Shōri feature, white-rabbit photo band, Shopee banner rail, B2B accordion, trust band, footer) in a premium palette: deep navy #0A1F3D, ivory #F5F1E9, champagne gold #C9A961. Fonts: Instrument Serif (Sarfat's display face) + Jost, base 18px, big type throughout. Copy is English, elevated register, kept short.
 - Logo: extracted from the Shopee shop banner (`img/logo-white.png`, `img/logo-navy.png`, `img/mark-*.png`).
-- `photos/` — CC0 stock photos via the Openverse API + Wikimedia Commons (no attribution required). Hero is `hero-white.jpg` (arctic white rabbit, Commons CC0 'White rabbit on grass (Unsplash)'); `rabbit-white-close.jpg` (Commons CC0 'Dwarf rabbit 2014'), `rabbit-white-grass.jpg` (rawpixel), plus rabbit-dutch, rabbit-close, rabbits-hay, guinea-grass, guinea-pair, guinea-gray, rooster, chick, hay-bales, hay-band (crop), hen-freerange, hens-flock. Glenn rejected the brown lionhead hero; he wants white rabbits.
+- `photos/` — stock photos via the Openverse API + Wikimedia Commons. Hero is `hero-white.jpg` = Commons 'Blanc De Hotot.jpg' by The_only_true_editor, **CC BY-SA 4.0 — credit line is in the index/rabbit footers, keep it**. Glenn rejected the arctic hare ('rabbit or kangaroo?') and the brown lionhead. Everything else is CC0: `rabbit-white-close.jpg` (Commons CC0 'Dwarf rabbit 2014'), `rabbit-white-grass.jpg` (rawpixel), plus rabbit-dutch, rabbit-close, rabbits-hay, guinea-grass, guinea-pair, guinea-gray, rooster, chick, hay-bales, hay-band (crop), hen-freerange, hens-flock. Glenn rejected the brown lionhead hero; he wants white rabbits.
 
 ## Images
 - `img/` — original Shopee listing photos (resized ≤1000px). `sec-*.jpg` are the secondary listing banners; six of them feed the gallery.
@@ -19,9 +21,8 @@ Fallback URL while DNS propagates: https://glenngmgm.github.io/windowofnature/
 - Shop logo/banner from Shopee CDN: `img/logo-square.jpg`, `img/logo-banner.jpg`.
 
 ## Editing
-- Contact config at the bottom of `index.html`: `CONFIG.whatsapp` is still a placeholder `62XXXXXXXXXXX` — **fill in the real WA number**. Instagram/TikTok URLs are guesses (`wonfeed_`), confirm.
-- Product rail: edit the `ITEMS` array (image basename in `cut/`, name, tag, Shopee itemId).
-- Rabbit toggle copy: `RABBIT` object. Gallery: `GALLERY` array.
+- Contact config at the top of `site.js`: `CONFIG.whatsapp` is still a placeholder `62XXXXXXXXXXX` — **fill in the real WA number** (Glenn says he gave it; it was not in any file or message I could find). Instagram is `wonfeed.official` (confirmed). TikTok URL is a guess.
+- Product cards per page live in `gen_pages.py`. Cutouts come from `cut/`; best results come from unioning rembg masks from isnet + u2net + birefnet (`masks/`, `compose.py` in the session scratchpad; recreate if lost: mask each model with `only_mask=True`, take the max, close small holes, crop to bbox).
 
 ## Deploy
 Push to `main` → GitHub Pages rebuilds in ~1 min. No CI.
