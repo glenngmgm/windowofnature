@@ -17,7 +17,8 @@ Fallback URL while DNS propagates: https://glenngmgm.github.io/windowofnature/
 ## Images
 - `img/` — original Shopee listing photos (resized ≤1000px). `sec-*.jpg` are the secondary listing banners; six of them feed the gallery.
 - `cut/` — background-removed product cutouts (PNG). Made locally with `rembg` (venv in the session scratchpad; models cached in `~/.u2net`). isnet-general-use for most; u2net for hay bales / white sacks (isnet eats pale objects); birefnet-general-lite is best but ~15 min/image on this Mac.
-- `cut2/`, `cut3/` are gitignored scratch for cutout re-runs. `cut/cut-hay.png` is a copy of the 500 g bale cutout because every model drops the pale wrapped bale in the Premium Cut Hay photo.
+- `cut2/`, `cut3/` are gitignored scratch for cutout re-runs. `cut/cut-hay.png` is a copy of the 500 g bale cutout and `cut/bundle-pelet-hay.png` is composed from the Super bag + 500 g bale cutouts (PIL), because every model (isnet, u2net, birefnet, and their union) drops the pale wrapped bale in those two photos.
+- `banners/b1..b8.jpg` — the Shopee **store decoration** banners (pulled via Glenn's logged-in Chrome; the API is signed). b2 = meadow logo poster (home), b1 = family (home B2B), b3 = hay promo (hay page), b4/b5 rabbit, b6 poultry, b7 benefits, b8 welcome lineup.
 - Shop logo/banner from Shopee CDN: `img/logo-square.jpg`, `img/logo-banner.jpg`.
 
 ## Editing
