@@ -30,6 +30,21 @@ Fallback URL while DNS propagates: https://glenngmgm.github.io/windowofnature/
 ## History note (26 Sep 2026)
 Glenn tried a Codex redesign (commits 159d765, f2f11a4, c26b162: forest green/editorial, ten pages incl. pellets, why-alfalfa, wholesale, credits). He disliked it and asked for this design back. The commit after c26b162 restores this design and borrows only: the confirmed WhatsApp number, no-email rule, the horse/stable enquiry section on the Hay page (`photos/equestrian-pasture.jpg`, Zooey Li on Unsplash, credited under the photo), per-product colour backdrops (`tint`/`disc` in gen_pages.py), robots.txt and sitemap.xml. Codex's version stays in git history if anything else is wanted from it.
 
+
+## Performance & SEO setup (audit fixes, 26 Sep 2026)
+- All site images are WebP (`cut/*.webp`, `photos/*.webp`, `banners/*.webp`), capped at 1000 px (cutouts) / 1800 px (photos). Originals (png/jpg) stay in the repo as sources. When adding an image, convert to WebP and reference the .webp.
+- `finalize.py` stamps every `<img>` with width/height, lazy-loads all but the logo, and preloads the hero. `gen_pages.py` runs it automatically; run `python3 finalize.py` after hand-editing index.html or feedmill.html.
+- Google Fonts load non-blocking (preload + media=print swap). Hero parallax runs on scroll only.
+- Share previews: `og/<page>.jpg` (1200x630). og:image/og:url use https://glenngmgm.github.io/windowofnature/ — **switch these to https://windowofnature.co.id/ when the domain is attached** (search-replace the base URL in *.html and gen_pages.py).
+- Analytics: set `CONFIG.ga4` in site.js to a GA4 Measurement ID (G-...). Outbound clicks to Shopee/TikTok/WhatsApp/Instagram are then tracked as `outbound_click` with channel/label/page.
+- Icons: img/favicon-32.png, img/apple-touch-icon.png, img/icon-192.png. robots.txt + sitemap.xml at root.
+
+## Claims (softened 26 Sep 2026, restore only with proof)
+- Hay h1 was "Indonesia's largest alfalfa importer" → "Italian alfalfa, imported direct"; band "#1 importer in Indonesia" → "Direct from Italy".
+- Feedmill "The first feedmill in Bandung…" → "A Bandung feedmill that formulates…"; band "1st in Bandung" → "Custom formulation".
+- "Laboratory-tested" kept (it is on WON's own Shopee artwork). Review count updated to 7,000+ (Shopee showed 7RB).
+- Home: the four quality pillars now live as a compact row inside the story section. Shōri page has a 7-day switching guide (from WON's own feeding banner). Nav includes Wholesale.
+
 ## Deploy
 Push to `main` → GitHub Pages rebuilds in ~1 min. No CI.
 Custom domain is NOT attached yet (DNS for windowofnature.co.id has no records as of 26 Sep 2026). Once the DNS records below exist, attach it with: `echo windowofnature.co.id > CNAME && git add CNAME && git commit -m "domain" && git push`, then enable Enforce HTTPS after the cert is issued.

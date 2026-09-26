@@ -1,9 +1,9 @@
 # Generates one full-screen page per product line from a shared template.
 import json
 WA='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 12 12 0 0 0 4.6 4c1.7.7 2.3.8 3.1.7a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.2-.2-.2-.4-.3z"/></svg>'
-NAV='<a href="rabbit.html">Rabbit</a><a href="shori.html">Shōri</a><a href="hay.html">Alfalfa Hay</a><a href="poultry.html">Poultry</a><a href="feedmill.html">The Feedmill</a>'
+NAV='<a href="rabbit.html">Rabbit</a><a href="shori.html">Shōri</a><a href="hay.html">Alfalfa Hay</a><a href="poultry.html">Poultry</a><a href="feedmill.html">Feedmill</a><a href="index.html#b2b">Wholesale</a>'
 PAGES={
- 'rabbit':dict(tint='#EEF0F6',disc='#DCE2EF',extra='',title='Rabbit Feed — WON',hero='photos/hero-white.jpg',pos='center 38%',eyebrow='For rabbits · Super & Premium',
+ 'rabbit':dict(tint='#EEF0F6',disc='#DCE2EF',extra='',title='Rabbit Feed — WON',hero='photos/hero-white.webp',pos='center 38%',eyebrow='For rabbits · Super & Premium',
    h1='Super <i>&</i> Premium',lead='Two alfalfa pellets from one mill. Super for every day. Premium, finished with olive oil, for growth and coat.',
    band=[('2','formulas'),('Alfalfa','Australian'),('20%+','protein'),('1–20 kg','pack sizes')],
    sec='Choose your <i>pellet</i>',
@@ -14,7 +14,7 @@ PAGES={
    facts=[('20%+','protein','Alfalfa-led nutrition for steady growth and condition.'),('Black seed','habbatussauda','Traditional immune support in every batch of Super.'),('Olive oil','in Premium','Cold-pressed, for coat shine and skin health.')],
    gal=[('../banners/b1','27251151691'),('../banners/b4','27251151691')],
    cta='Ready for your <i>rabbit</i>',ctap='Order today on Shopee, or write to us for farm quantities.',ctaid='27251151691',credit='Hero photograph: "Blanc De Hotot" by The_only_true_editor, Wikimedia Commons, CC BY-SA 4.0.'),
- 'shori':dict(tint='#FBF1EF',disc='#F6D9DE',extra='',title='Shōri — WON',hero='photos/guinea-grass.jpg',pos='30% center',eyebrow='Rabbits & guinea pigs · 勝利',
+ 'shori':dict(tint='#FBF1EF',disc='#F6D9DE',extra='<section class="guide">\n  <div class="wrap">\n    <div class="head center"><span class="eyebrow r">Switching to Shōri</span><h2 class="d lg r d1">Seven days to a <i>new</i> bowl</h2><p class="lead r d2" style="margin-top:22px">Small animals have sensitive stomachs. Blend Shōri into the current food gradually over one week.</p></div>\n    <div class="steps4 r d2">\n      <div><span class="day">Days 1–2</span><div class="bar"><i style="width:25%"></i></div><b>25%</b><span>Shōri</span></div>\n      <div><span class="day">Days 3–4</span><div class="bar"><i style="width:50%"></i></div><b>50%</b><span>Shōri</span></div>\n      <div><span class="day">Days 5–6</span><div class="bar"><i style="width:75%"></i></div><b>75%</b><span>Shōri</span></div>\n      <div><span class="day">Day 7</span><div class="bar"><i style="width:100%"></i></div><b>100%</b><span>Shōri</span></div>\n    </div>\n  </div>\n</section>\n',title='Shōri — WON',hero='photos/guinea-grass.webp',pos='30% center',eyebrow='Rabbits & guinea pigs · 勝利',
    h1='Shōri, for<br><i>two companions</i>',lead="Indonesia's first dual-nutrition formula. Japanese-inspired, milled in Bandung, with the vitamin C guinea pigs cannot make themselves.",
    band=[('18%','crude protein'),('14.5%','crude fibre'),('+C','vitamin'),('2550','kcal / kg')],
    sec='The Shōri <i>range</i>',
@@ -23,9 +23,9 @@ PAGES={
    facts=[('Vitamin C','for guinea pigs','Guinea pigs cannot synthesise it. Shōri carries it in every pellet.'),('Omega','for coat & heart','Balanced fatty acids for skin, coat and condition.'),('One bag','two animals','Rabbit and guinea pig households feed from a single blend.')],
    gal=[('sec-r','51350921733'),('sec-k','51350921733'),('sec-p','51350921733')],
    cta='Discover <i>Shōri</i>',ctap='Available on Shopee in 1 kg, or in sets with Italian hay.',ctaid='51350921733',credit=''),
- 'hay':dict(tint='#EFF1E6',disc='#DCE5C9',extra='<section class="stable">\n  <div class="wrap stable-grid">\n    <div class="photo r"><img src="photos/equestrian-pasture.jpg" alt="Horses at pasture" loading="lazy"><small>Illustrative photograph by Zooey Li, Unsplash.</small></div>\n    <div>\n      <span class="eyebrow r">For horses & stables</span>\n      <h2 class="d lg r d1" style="margin-top:20px">A place in the <i>professional stable</i></h2>\n      <p class="lead r d2" style="margin-top:22px">Italian alfalfa balances grass hay with protein, calcium and energy. We supply stables, riding schools and studs by the bale or by the pallet.</p>\n      <form class="enq r d3" id="horse-form">\n        <label><span>Stable or business</span><input name="biz" required placeholder="e.g. Lembang Riding Club"></label>\n        <label><span>Number of horses</span><input name="n" inputmode="numeric" placeholder="e.g. 12"></label>\n        <label><span>Monthly volume</span><select name="vol"><option>Under 100 kg</option><option>100–500 kg</option><option>500 kg – 1 tonne</option><option>Over 1 tonne</option></select></label>\n        <button class="btn fill" type="submit">Continue on WhatsApp</button>\n        <p class="note">This opens WhatsApp with your details filled in. Nothing is sent until you press send.</p>\n      </form>\n    </div>\n  </div>\n</section>\n<script>document.getElementById(\'horse-form\').addEventListener(\'submit\',e=>{e.preventDefault();const f=new FormData(e.target);const m=`Hello WON, I would like to enquire about alfalfa hay for horses.\\nStable: ${f.get(\'biz\')}\\nHorses: ${f.get(\'n\')||\'-\'}\\nMonthly volume: ${f.get(\'vol\')}`;window.open(wa(m),\'_blank\',\'noopener\');});</script>\n',title='Alfalfa Hay — WON',hero='photos/hay-bales.jpg',pos='center 55%',eyebrow='Alfalfa hay · imported from Italy',
-   h1="Indonesia's largest <i>alfalfa</i> importer",lead='Sun-cured in Emilia-Romagna, above 20% protein, non-GMO. Shipped by the container and fresh with every harvest.',
-   band=[('#1','importer in Indonesia'),('20%+','crude protein'),('Italy','Emilia-Romagna'),('Fresh','every harvest')],
+ 'hay':dict(tint='#EFF1E6',disc='#DCE5C9',extra='<section class="stable">\n  <div class="wrap stable-grid">\n    <div class="photo r"><img src="photos/equestrian-pasture.webp" alt="Horses at pasture" loading="lazy"><small>Illustrative photograph by Zooey Li, Unsplash.</small></div>\n    <div>\n      <span class="eyebrow r">For horses & stables</span>\n      <h2 class="d lg r d1" style="margin-top:20px">A place in the <i>professional stable</i></h2>\n      <p class="lead r d2" style="margin-top:22px">Italian alfalfa balances grass hay with protein, calcium and energy. We supply stables, riding schools and studs by the bale or by the pallet.</p>\n      <form class="enq r d3" id="horse-form">\n        <label><span>Stable or business</span><input name="biz" required placeholder="e.g. Lembang Riding Club"></label>\n        <label><span>Number of horses</span><input name="n" inputmode="numeric" placeholder="e.g. 12"></label>\n        <label><span>Monthly volume</span><select name="vol"><option>Under 100 kg</option><option>100–500 kg</option><option>500 kg – 1 tonne</option><option>Over 1 tonne</option></select></label>\n        <button class="btn fill" type="submit">Continue on WhatsApp</button>\n        <p class="note">This opens WhatsApp with your details filled in. Nothing is sent until you press send.</p>\n      </form>\n    </div>\n  </div>\n</section>\n<script>document.getElementById(\'horse-form\').addEventListener(\'submit\',e=>{e.preventDefault();const f=new FormData(e.target);const m=`Hello WON, I would like to enquire about alfalfa hay for horses.\\nStable: ${f.get(\'biz\')}\\nHorses: ${f.get(\'n\')||\'-\'}\\nMonthly volume: ${f.get(\'vol\')}`;window.open(wa(m),\'_blank\',\'noopener\');});</script>\n',title='Alfalfa Hay — WON',hero='photos/hay-bales.webp',pos='center 55%',eyebrow='Alfalfa hay · imported from Italy',
+   h1="Italian <i>alfalfa</i>, imported direct",lead='Sun-cured in Emilia-Romagna, above 20% protein, non-GMO. Shipped by the container and fresh with every harvest.',
+   band=[('Direct','from Italy'),('20%+','crude protein'),('Italy','Emilia-Romagna'),('Fresh','every harvest')],
    sec='From a pouch to a <i>bale</i>',
    cards=[('hay-italia-500g','Hay · 500 g','Alfalfa Hay Italia','The pouch, for one or two companions.','29611529965'),
           ('hay-italia-500g','Hay · 1 kg','Alfalfa Hay Italia','The family bag. Our best seller.','29611524857'),
@@ -34,7 +34,7 @@ PAGES={
    facts=[('20%','protein and above','Legume hay, richer than grass hay, for growth, milk and recovery.'),('Fibre','for teeth and gut','Long, sun-cured stems keep rabbit and guinea pig digestion moving.'),('Non-GMO','dehydrated at source','Cut and dried in Italy, sealed for the journey, opened fresh in Bandung.')],
    gal=[('../banners/b3','24586140324'),('sec-c','29611524857')],
    cta='Hay by the <i>tonne</i>',ctap='Bales, pallets and full containers for farms, pet shops and distributors across Indonesia.',ctaid='29611524857',credit=''),
- 'poultry':dict(tint='#FBF3E8',disc='#F7E0C3',extra='',title='Poultry Feed — WON',hero='photos/hen-freerange.jpg',pos='center 40%',eyebrow='For poultry · starter, grower, layer',
+ 'poultry':dict(tint='#FBF3E8',disc='#F7E0C3',extra='',title='Poultry Feed — WON',hero='photos/hen-freerange.webp',pos='center 40%',eyebrow='For poultry · starter, grower, layer',
    h1='Super <i>Chicken</i> Feed',lead='Three formulas for every stage of the flock, pressed fresh at the mill. Rapid growth on less feed, and eggs you can count on.',
    band=[('22%','starter protein'),('17%','grower protein'),('Ω','omega layer'),('1–25 kg','pack sizes')],
    sec='Every <i>stage</i> of the flock',
@@ -54,11 +54,17 @@ TPL='''<!DOCTYPE html>
 <meta name="description" content="{leadplain}">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{leadplain}">
-<meta property="og:image" content="https://windowofnature.co.id/{hero}">
-<link rel="icon" href="img/mark-navy.png">
+<meta property="og:image" content="https://glenngmgm.github.io/windowofnature/og/{slug}.jpg">
+<meta property="og:url" content="https://glenngmgm.github.io/windowofnature/{slug}.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Epilogue:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Epilogue:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Epilogue:wght@300;400;500;600&display=swap"></noscript>
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta name="theme-color" content="#0A1F3D">
 <link rel="stylesheet" href="site.css">
 <style>.hero .ph{{background-image:url({hero});background-position:{pos}}}</style>
 </head>
@@ -107,7 +113,7 @@ TPL='''<!DOCTYPE html>
 </section>
 
 <section id="trust">
-  <div class="ph"></div>
+  <div class="ph" style="background-image:url({hero})"></div>
   <div class="wrap">
     <div class="stars r">★★★★★</div>
     <h2 class="d lg r d1">{cta}</h2>
@@ -123,9 +129,9 @@ TPL='''<!DOCTYPE html>
 <footer><div class="wrap">
   <div class="foot">
     <div><a class="logo" href="./"><img src="img/logo-white.png" alt="WON"></a><p>Window of Nature. A feed mill in Bandung, West Java, crafting precisely formulated, small-batch nutrition for rabbits, guinea pigs, poultry and livestock.</p></div>
-    <div><h4>Explore</h4>{navfoot}</div>
-    <div><h4>Shop</h4><a href="https://shopee.co.id/wonfeed_" target="_blank" rel="noopener">Shopee</a><a href="https://www.tiktok.com/@wonfeed.official" id="f-tt" target="_blank" rel="noopener">TikTok Shop</a><a href="#" data-wa="Hello WON, I would like to place an order.">WhatsApp</a></div>
-    <div><h4>Contact</h4><a href="https://www.instagram.com/wonfeed.official" id="f-ig" target="_blank" rel="noopener">Instagram @wonfeed.official</a><a href="https://www.tiktok.com/@wonfeed.official" target="_blank" rel="noopener">TikTok @wonfeed.official</a><a href="#" data-wa="Hello WON, I have a question.">+62 813-9177-9997</a><a href="#">Bandung, West Java</a></div>
+    <div><h3 class="fh">Explore</h3>{navfoot}</div>
+    <div><h3 class="fh">Shop</h3><a href="https://shopee.co.id/wonfeed_" target="_blank" rel="noopener">Shopee</a><a href="https://www.tiktok.com/@wonfeed.official" id="f-tt" target="_blank" rel="noopener">TikTok Shop</a><a href="#" data-wa="Hello WON, I would like to place an order.">WhatsApp</a></div>
+    <div><h3 class="fh">Contact</h3><a href="https://www.instagram.com/wonfeed.official" id="f-ig" target="_blank" rel="noopener">Instagram @wonfeed.official</a><a href="https://www.tiktok.com/@wonfeed.official" target="_blank" rel="noopener">TikTok @wonfeed.official</a><a href="#" data-wa="Hello WON, I have a question.">+62 813-9177-9997</a><a href="#">Bandung, West Java</a></div>
   </div>
   <div class="copy"><span>© 2026 WON · Window of Nature</span><span>Milled with care in Bandung</span></div>
   {credit}
@@ -138,12 +144,15 @@ TPL='''<!DOCTYPE html>
 import re
 for slug,p in PAGES.items():
     band=''.join(f'<div><b>{b}</b><span>{s}</span></div>' for b,s in p['band'])
-    cards=''.join(f'<a class="prod r" href="https://shopee.co.id/product/1250916592/{i}" target="_blank" rel="noopener"><div class="stage"><img src="cut/{img}.png" alt="{n}" loading="lazy"></div><div class="k">{k}</div><h3>{n}</h3><p>{d}</p><span class="go">View on Shopee <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M8 7h9v9"/></svg></span></a>' for img,k,n,d,i in p['cards'])
+    cards=''.join(f'<a class="prod r" href="https://shopee.co.id/product/1250916592/{i}" target="_blank" rel="noopener"><div class="stage"><img src="cut/{img}.webp" alt="{n}" loading="lazy"></div><div class="k">{k}</div><h3>{n}</h3><p>{d}</p><span class="go">View on Shopee <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M8 7h9v9"/></svg></span></a>' for img,k,n,d,i in p['cards'])
     facts=''.join(f'<div class="fact r"><b>{b}</b><span>{s}</span><p>{d}</p></div>' for b,s,d in p['facts'])
     from PIL import Image as _I
     def _src(g): return (g.replace("../","") if g.startswith("../") else "img/"+g)+".jpg"
     def _wide(g):
         w,h=_I.open(_src(g)).size; return ' class="wide"' if w/h>1.4 else ''
     gal=''.join(f'<a{_wide(g)} href="https://shopee.co.id/product/1250916592/{i}" target="_blank" rel="noopener"><img src="{_src(g)}" alt="WON on Shopee" loading="lazy"></a>' for g,i in p['gal'])
-    html=TPL.format(tint=p['tint'],disc=p['disc'],extra=p['extra'],title=p['title'],leadplain=re.sub('<[^>]+>','',p['lead']),hero=p['hero'],pos=p['pos'],nav=NAV,navfoot=NAV.replace('<a ','<a class="fl" '),eyebrow=p['eyebrow'],h1=p['h1'],lead=p['lead'],ctaid=p['ctaid'],band=band,sec=p['sec'],ncards=len(p['cards']),cards=cards,facts=facts,gal=gal,cta=p['cta'],ctap=p['ctap'],name=p['title'].split(' — ')[0],credit=(f'<div class="credits">{p["credit"]}</div>' if p['credit'] else ''),wa=WA)
+    html=TPL.format(slug=slug,tint=p['tint'],disc=p['disc'],extra=p['extra'],title=p['title'],leadplain=re.sub('<[^>]+>','',p['lead']),hero=p['hero'],pos=p['pos'],nav=NAV,navfoot=NAV.replace('<a ','<a class="fl" '),eyebrow=p['eyebrow'],h1=p['h1'],lead=p['lead'],ctaid=p['ctaid'],band=band,sec=p['sec'],ncards=len(p['cards']),cards=cards,facts=facts,gal=gal,cta=p['cta'],ctap=p['ctap'],name=p['title'].split(' — ')[0],credit=(f'<div class="credits">{p["credit"]}</div>' if p['credit'] else ''),wa=WA)
     open(f'{slug}.html','w').write(html); print('wrote',slug)
+
+import subprocess,sys
+subprocess.run([sys.executable,"finalize.py"],check=True)
