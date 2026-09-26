@@ -80,12 +80,12 @@ header .pill{width:min(1320px,100% - 32px);margin-inline:auto;background:rgba(10
 
 /* stats */
 .band{background:var(--navy);color:var(--ivory)}
-.band .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.band .wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
 .band div{padding:40px 30px;border-right:1px solid var(--line-w)}
 .band div:first-child{border-left:1px solid var(--line-w)}
 .band b{display:block;font-family:var(--serif);font-weight:400;font-size:4rem;line-height:1;color:var(--gold-2)}
 .band span{font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;opacity:.7;font-weight:500}
-@media(max-width:820px){.band .wrap{grid-template-columns:1fr 1fr}.band div{padding:30px 22px}.band b{font-size:3rem}.band div:nth-child(-n+2){border-bottom:1px solid var(--line-w)}.band div:nth-child(3){border-left:1px solid var(--line-w)}}
+@media(max-width:820px){.band .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}.band div{padding:28px 18px}.band b{font-size:2.6rem}.band span{font-size:.72rem;letter-spacing:.14em}.band div:nth-child(-n+2){border-bottom:1px solid var(--line-w)}.band div:nth-child(3){border-left:1px solid var(--line-w)}}
 
 section{padding:clamp(90px,10vw,150px) 0;position:relative}
 .center{text-align:center}
