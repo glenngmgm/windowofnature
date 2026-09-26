@@ -6,7 +6,7 @@ Fallback URL while DNS propagates: https://glenngmgm.github.io/windowofnature/
 
 ## What it is
 - Static multi-page site, no build step. Shared `site.css` + `site.js` (CONFIG with WhatsApp/Instagram/TikTok, WA links, reveal animations, hero parallax).
-- Pages: `index.html` (home: hero, stats band, four product-line tiles, story with polaroids + Hay/Feedmill tiles, pillars, B2B accordion, trust, footer), `rabbit.html` (Super & Premium), `shori.html`, `hay.html` ("Indonesia's largest importer of alfalfa"), `poultry.html`, `feedmill.html` (custom formulation, "first in Bandung"). Each product page is a full-screen hero + stats + range cards + facts + Shopee banner gallery + CTA.
+- Pages: `index.html` (home: hero, stats band, four product-line tiles, story with polaroids + Hay/Feedmill tiles, pillars, B2B accordion, trust, footer), `rabbit.html` (Super & Premium), `shori.html`, `hay.html` ("Indonesia's largest importer of alfalfa"), `poultry.html`, `feedmill.html` (custom formulation, "first in Bandung"). Each product page is a full-screen hero + stats + an unboxed product showcase (large cutouts on the ivory with a ground shadow, class `.showcase .prod`) + ruled facts + Shopee banner gallery + CTA. Glenn wants products big and never boxed.
 - The four product pages are generated from `gen_pages.py` (edit the PAGES dict there, then `python3 gen_pages.py`). `feedmill.html` and `index.html` are hand-written.
 - English only, premium/minimal tone, image-led. No prices and no bundle/set products on the site (Glenn's call). Home links only to the four product lines + Feedmill.
 - Every product links to its Shopee listing (`https://shopee.co.id/product/1250916592/<itemId>`).
@@ -22,7 +22,7 @@ Fallback URL while DNS propagates: https://glenngmgm.github.io/windowofnature/
 - Shop logo/banner from Shopee CDN: `img/logo-square.jpg`, `img/logo-banner.jpg`.
 
 ## Editing
-- Contact config at the top of `site.js`: `CONFIG.whatsapp` is still a placeholder `62XXXXXXXXXXX` — **fill in the real WA number** (Glenn says he gave it; it was not in any file or message I could find). Instagram is `wonfeed.official` (confirmed). TikTok URL is a guess.
+- Contact config at the top of `site.js`: WhatsApp is `628112330890` (the number Glenn uses on JoynVision and Kru; he said he'd sent it, this was the only one found — confirm it is the WON line). Instagram is `wonfeed.official` (confirmed). TikTok URL is a guess.
 - Product cards per page live in `gen_pages.py`. Cutouts come from `cut/`; best results come from unioning rembg masks from isnet + u2net + birefnet (`masks/`, `compose.py` in the session scratchpad; recreate if lost: mask each model with `only_mask=True`, take the max, close small holes, crop to bbox).
 
 ## Deploy
