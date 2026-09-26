@@ -18,12 +18,13 @@ Fallback URL while DNS propagates: https://glenngmgm.github.io/windowofnature/
 ## Images
 - `img/` — original Shopee listing photos (resized ≤1000px). `sec-*.jpg` are the secondary listing banners; six of them feed the gallery.
 - `cut/` — background-removed product cutouts (PNG). Made locally with `rembg` (venv in the session scratchpad; models cached in `~/.u2net`). isnet-general-use for most; u2net for hay bales / white sacks (isnet eats pale objects); birefnet-general-lite is best but ~15 min/image on this Mac.
-- `cut2/`, `cut3/` are gitignored scratch for cutout re-runs. `cut/cut-hay.png` is a copy of the 500 g bale cutout and `cut/bundle-pelet-hay.png` is composed from the Super bag + 500 g bale cutouts (PIL), because every model (isnet, u2net, birefnet, and their union) drops the pale wrapped bale in those two photos.
+- `cut2/`, `cut3/` are gitignored scratch for cutout re-runs. `cut/cut-hay.png` is a copy of the 500 g bale cutout and `cut/bundle-pelet-hay.png` is composed from the Super bag + 500 g bale cutouts (PIL), because every model (isnet, u2net, birefnet, and their union) drops the pale wrapped bale in those two photos. `cut/hay-italia-11kg.png` is a colour mask (near-white, low-saturation pixels, largest component, holes filled) plus the model masks only inside the 11 KG badge and rabbit zones; the models alone tore the sack's bottom-left.
+- Shopee banners are shown at their true proportions, never cropped (`.gal img` auto height; 2:1 banners get `.wide` and span two columns). Glenn complained when the family/Shop-now banner was cropped.
 - `banners/b1..b8.jpg` — the Shopee **store decoration** banners (pulled via Glenn's logged-in Chrome; the API is signed). b2 = meadow logo poster (home), b1 = family (home B2B), b3 = hay promo (hay page), b4/b5 rabbit, b6 poultry, b7 benefits, b8 welcome lineup.
 - Shop logo/banner from Shopee CDN: `img/logo-square.jpg`, `img/logo-banner.jpg`.
 
 ## Editing
-- Contact config at the top of `site.js`: WhatsApp is **+62 813-9177-9997 (`6281391779997`)**, the confirmed WON line. **No email anywhere**; all contact is WhatsApp or Shopee. Instagram is `wonfeed.official`. TikTok URL is a guess.
+- Contact config at the top of `site.js`: WhatsApp is **+62 813-9177-9997 (`6281391779997`)**, the confirmed WON line. **No email anywhere**; all contact is WhatsApp or Shopee. Instagram, TikTok and TikTok Shop are all `@wonfeed.official` (confirmed); links are hard-coded in HTML and set in `site.js` CONFIG. Trust bands offer Shopee, TikTok Shop and WhatsApp.
 - Product cards per page live in `gen_pages.py`. Cutouts come from `cut/`; best results come from unioning rembg masks from isnet + u2net + birefnet (`masks/`, `compose.py` in the session scratchpad; recreate if lost: mask each model with `only_mask=True`, take the max, close small holes, crop to bbox).
 
 ## History note (26 Sep 2026)
