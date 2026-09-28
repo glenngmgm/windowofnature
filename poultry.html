@@ -12,16 +12,14 @@
 <meta property="og:url" content="https://windowofnature.co.id/poultry.html">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Epilogue:wght@300;400;500;600&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Epilogue:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Epilogue:wght@300;400;500;600&display=swap"></noscript>
+<link rel="preload" href="fonts/InstrumentSerif-normal-latin-jizBRFtN.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Epilogue-normal-latin-O4ZRFGj5.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <meta name="theme-color" content="#0A1F3D">
-<link rel="preload" as="image" href="photos/hen-freerange.webp" fetchpriority="high">
-<link rel="stylesheet" href="site.css?v=204b30e1">
-<style>.hero .ph{background-image:url(photos/hen-freerange.webp);background-position:center 40%}</style>
+<link rel="preload" as="image" href="photos/hen-freerange-m.webp" media="(max-width:700px)" fetchpriority="high">
+<link rel="preload" as="image" href="photos/hen-freerange.webp" media="(min-width:701px)" fetchpriority="high">
+<link rel="stylesheet" href="site.css?v=e148d4d8">
+<style>.hero .ph,#trust .ph{background-image:url(photos/hen-freerange.webp);background-position:center 40%}@media(max-width:700px){.hero .ph,#trust .ph{background-image:url(photos/hen-freerange-m.webp)}}</style>
 </head>
 <body>
 <header>
@@ -68,7 +66,7 @@
 </section>
 
 <section id="trust">
-  <div class="ph" style="background-image:url(photos/hen-freerange.webp)"></div>
+  <div class="ph"></div>
   <div class="wrap">
     <div class="stars r">★★★★★</div>
     <h2 class="d lg r d1">Feed the <i>flock</i></h2>

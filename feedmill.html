@@ -12,18 +12,17 @@
 <meta property="og:url" content="https://windowofnature.co.id/feedmill.html">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Epilogue:wght@300;400;500;600&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Epilogue:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Epilogue:wght@300;400;500;600&display=swap"></noscript>
+<link rel="preload" href="fonts/InstrumentSerif-normal-latin-jizBRFtN.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Epilogue-normal-latin-O4ZRFGj5.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <meta name="theme-color" content="#0A1F3D">
-<link rel="preload" as="image" href="photos/pellets-feeder.webp" fetchpriority="high">
-<link rel="stylesheet" href="site.css?v=204b30e1">
+<link rel="preload" as="image" href="photos/pellets-feeder-m.webp" media="(max-width:700px)" fetchpriority="high">
+<link rel="preload" as="image" href="photos/pellets-feeder.webp" media="(min-width:701px)" fetchpriority="high">
+<link rel="stylesheet" href="site.css?v=e148d4d8">
 <style>
 .fhero{min-height:min(88svh,820px)}
 .fhero .ph{background-image:url(photos/pellets-feeder.webp);background-position:center 50%}
+@media(max-width:700px){.fhero .ph{background-image:url(photos/pellets-feeder-m.webp)}}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .step{background:#fff;border-radius:28px;padding:44px 34px 46px}
 .step .n{font-family:var(--serif);font-style:italic;font-size:3.4rem;color:var(--gold);line-height:1;margin-bottom:22px}

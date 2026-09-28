@@ -58,15 +58,12 @@ TPL='''<!DOCTYPE html>
 <meta property="og:url" content="https://windowofnature.co.id/{slug}.html">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Epilogue:wght@300;400;500;600&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Epilogue:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Epilogue:wght@300;400;500;600&display=swap"></noscript>
+<link rel="preload" href="fonts/InstrumentSerif-normal-latin-jizBRFtN.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Epilogue-normal-latin-O4ZRFGj5.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <meta name="theme-color" content="#0A1F3D">
 <link rel="stylesheet" href="site.css">
-<style>.hero .ph{{background-image:url({hero});background-position:{pos}}}</style>
+<style>.hero .ph,#trust .ph{{background-image:url({hero});background-position:{pos}}}@media(max-width:700px){{.hero .ph,#trust .ph{{background-image:url({hero_m})}}}}</style>
 </head>
 <body>
 <header>
@@ -113,7 +110,7 @@ TPL='''<!DOCTYPE html>
 </section>
 
 <section id="trust">
-  <div class="ph" style="background-image:url({hero})"></div>
+  <div class="ph"></div>
   <div class="wrap">
     <div class="stars r">★★★★★</div>
     <h2 class="d lg r d1">{cta}</h2>
@@ -151,7 +148,7 @@ for slug,p in PAGES.items():
     def _wide(g):
         w,h=_I.open(_src(g)).size; return ' class="wide"' if w/h>1.4 else ''
     gal=''.join(f'<a{_wide(g)} href="https://shopee.co.id/product/1250916592/{i}" target="_blank" rel="noopener"><img src="{_src(g)}" alt="WON on Shopee" loading="lazy"></a>' for g,i in p['gal'])
-    html=TPL.format(slug=slug,tint=p['tint'],disc=p['disc'],extra=p['extra'],title=p['title'],leadplain=re.sub('<[^>]+>','',p['lead']),hero=p['hero'],pos=p['pos'],nav=NAV,navfoot=NAV.replace('<a ','<a class="fl" '),eyebrow=p['eyebrow'],h1=p['h1'],lead=p['lead'],ctaid=p['ctaid'],band=band,sec=p['sec'],ncards=len(p['cards']),cards=cards,facts=facts,gal=gal,cta=p['cta'],ctap=p['ctap'],name=p['title'].split(' — ')[0],credit=(f'<div class="credits">{p["credit"]}</div>' if p['credit'] else ''),wa=WA)
+    html=TPL.format(hero_m=p['hero'].replace('.webp','-m.webp'),slug=slug,tint=p['tint'],disc=p['disc'],extra=p['extra'],title=p['title'],leadplain=re.sub('<[^>]+>','',p['lead']),hero=p['hero'],pos=p['pos'],nav=NAV,navfoot=NAV.replace('<a ','<a class="fl" '),eyebrow=p['eyebrow'],h1=p['h1'],lead=p['lead'],ctaid=p['ctaid'],band=band,sec=p['sec'],ncards=len(p['cards']),cards=cards,facts=facts,gal=gal,cta=p['cta'],ctap=p['ctap'],name=p['title'].split(' — ')[0],credit=(f'<div class="credits">{p["credit"]}</div>' if p['credit'] else ''),wa=WA)
     open(f'{slug}.html','w').write(html); print('wrote',slug)
 
 import subprocess,sys

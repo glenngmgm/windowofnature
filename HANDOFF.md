@@ -38,7 +38,8 @@ Glenn tried a Codex redesign (commits 159d765, f2f11a4, c26b162: forest green/ed
 ## Performance & SEO setup (audit fixes, 26 Sep 2026)
 - All site images are WebP (`cut/*.webp`, `photos/*.webp`, `banners/*.webp`), capped at 1000 px (cutouts) / 1800 px (photos). Originals (png/jpg) stay in the repo as sources. When adding an image, convert to WebP and reference the .webp.
 - `finalize.py` adds version stamps to site.css/site.js links (`?v=<md5>`) so browsers never show stale styles after a deploy. It also stamps every `<img>` with width/height, lazy-loads all but the logo, and preloads the hero. `gen_pages.py` runs it automatically; run `python3 finalize.py` after hand-editing index.html or feedmill.html.
-- Google Fonts load non-blocking (preload + media=print swap). Hero parallax runs on scroll only.
+- Fonts are **self-hosted** in `fonts/` (Instrument Serif regular/italic + Epilogue variable, latin + latin-ext for 'ō'), declared at the top of site.css, with metric-matched fallbacks ('Instrument Serif Fallback' = Georgia at 76.5%, 'Epilogue Fallback' = Arial at 108.9%) so text doesn't jump when fonts load. The two regular latin files are preloaded on every page. No Google Fonts requests.
+- Heroes have phone versions (`*-m.webp`, 900 px): product pages swap via a media query in each page's <style>, preloads carry media attributes, and the home banner uses srcset (`banners/b8-m.webp`). Hero parallax runs on scroll only.
 - Share previews: `og/<page>.jpg` (1200x630). og:image/og:url, sitemap.xml and robots.txt use https://windowofnature.co.id/.
 - Analytics: GA4 is ON with Measurement ID `G-B29T22FFXQ` (`CONFIG.ga4` in site.js). Outbound clicks to Shopee/TikTok/WhatsApp/Instagram are tracked as `outbound_click` with channel/label/page.
 - Icons: img/favicon-32.png, img/apple-touch-icon.png, img/icon-192.png. robots.txt + sitemap.xml at root.

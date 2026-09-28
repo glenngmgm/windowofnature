@@ -32,8 +32,10 @@ for f in glob.glob('*.html'):
     s=re.sub(r'href="site\.css(\?v=\w+)?"',f'href="site.css?v={V["site.css"]}"',s)
     s=re.sub(r'src="site\.js(\?v=\w+)?"',f'src="site.js?v={V["site.js"]}"',s)
     # preload hero background (first url(...) in the page or the default home hero)
-    m=re.search(r'\.hero \.ph\{\{?background-image:url\(([^)]+)\)',s)
+    m=re.search(r'\.hero \.ph(?:,#trust \.ph)?\{\{?background-image:url\(([^)]+)\)',s)
     hero=m.group(1) if m else None
     if hero and 'rel="preload" as="image"' not in s:
-        s=re.sub(r'(<link rel="stylesheet" href="site\.css[^"]*">)',lambda m:f'<link rel="preload" as="image" href="{hero}" fetchpriority="high">\n'+m.group(1),s,count=1)
+        mob=hero.replace('.webp','-m.webp')
+        tag=(f'<link rel="preload" as="image" href="{mob}" media="(max-width:700px)" fetchpriority="high">\n<link rel="preload" as="image" href="{hero}" media="(min-width:701px)" fetchpriority="high">' if os.path.exists(mob) else f'<link rel="preload" as="image" href="{hero}" fetchpriority="high">')
+        s=re.sub(r'(<link rel="stylesheet" href="site\.css[^"]*">)',lambda m:tag+'\n'+m.group(1),s,count=1)
     if s!=o: open(f,'w').write(s); print('finalized',f)
