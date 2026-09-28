@@ -54,8 +54,8 @@ TPL='''<!DOCTYPE html>
 <meta name="description" content="{leadplain}">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{leadplain}">
-<meta property="og:image" content="https://glenngmgm.github.io/windowofnature/og/{slug}.jpg">
-<meta property="og:url" content="https://glenngmgm.github.io/windowofnature/{slug}.html">
+<meta property="og:image" content="https://windowofnature.co.id/og/{slug}.jpg">
+<meta property="og:url" content="https://windowofnature.co.id/{slug}.html">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
