@@ -23,8 +23,11 @@ def fix_img(tag):
 import hashlib
 def asset_version(p): return hashlib.md5(open(p,'rb').read()).hexdigest()[:8]
 V={'site.css':asset_version('site.css'),'site.js':asset_version('site.js')}
+HTTPS_UPGRADE='<script>if(location.protocol==="http:"&&/(^|\\.)windowofnature\\.co\\.id$/.test(location.hostname))location.replace("https://"+location.host+location.pathname+location.search+location.hash)</script>'
 for f in glob.glob('*.html'):
     s=open(f).read(); o=s
+    if 'location.protocol==="http:"' not in s:
+        s=s.replace('<meta charset="UTF-8">','<meta charset="UTF-8">\n'+HTTPS_UPGRADE,1)
     s=re.sub(r'<img\b[^>]*>',lambda m:fix_img(m.group(0)),s)
     s=re.sub(r'href="site\.css(\?v=\w+)?"',f'href="site.css?v={V["site.css"]}"',s)
     s=re.sub(r'src="site\.js(\?v=\w+)?"',f'src="site.js?v={V["site.js"]}"',s)

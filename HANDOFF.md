@@ -1,8 +1,7 @@
 # WON — Window of Nature website
 
 Official site for WON Feed (Glenn's pet food & feed mill, Bandung).
-Live: https://windowofnature.co.id (GitHub Pages, repo `glenngmgm/windowofnature`, branch `main`, root).
-Fallback URL while DNS propagates: https://glenngmgm.github.io/windowofnature/
+Live: **https://windowofnature.co.id** (GitHub Pages, repo `glenngmgm/windowofnature`, branch `main`, root; `CNAME` file in repo). The old https://glenngmgm.github.io/windowofnature/ address 301-redirects to it.
 
 ## What it is
 - Static multi-page site, no build step. Shared `site.css` + `site.js` (CONFIG with WhatsApp/Instagram/TikTok, WA links, reveal animations, hero parallax).
@@ -40,7 +39,7 @@ Glenn tried a Codex redesign (commits 159d765, f2f11a4, c26b162: forest green/ed
 - All site images are WebP (`cut/*.webp`, `photos/*.webp`, `banners/*.webp`), capped at 1000 px (cutouts) / 1800 px (photos). Originals (png/jpg) stay in the repo as sources. When adding an image, convert to WebP and reference the .webp.
 - `finalize.py` adds version stamps to site.css/site.js links (`?v=<md5>`) so browsers never show stale styles after a deploy. It also stamps every `<img>` with width/height, lazy-loads all but the logo, and preloads the hero. `gen_pages.py` runs it automatically; run `python3 finalize.py` after hand-editing index.html or feedmill.html.
 - Google Fonts load non-blocking (preload + media=print swap). Hero parallax runs on scroll only.
-- Share previews: `og/<page>.jpg` (1200x630). og:image/og:url use https://glenngmgm.github.io/windowofnature/ — **switch these to https://windowofnature.co.id/ when the domain is attached** (search-replace the base URL in *.html and gen_pages.py).
+- Share previews: `og/<page>.jpg` (1200x630). og:image/og:url, sitemap.xml and robots.txt use https://windowofnature.co.id/.
 - Analytics: GA4 is ON with Measurement ID `G-B29T22FFXQ` (`CONFIG.ga4` in site.js). Outbound clicks to Shopee/TikTok/WhatsApp/Instagram are tracked as `outbound_click` with channel/label/page.
 - Icons: img/favicon-32.png, img/apple-touch-icon.png, img/icon-192.png. robots.txt + sitemap.xml at root.
 
@@ -57,7 +56,10 @@ Glenn tried a Codex redesign (commits 159d765, f2f11a4, c26b162: forest green/ed
 
 ## Deploy
 Push to `main` → GitHub Pages rebuilds in ~1 min. No CI.
-Custom domain is NOT attached yet (DNS for windowofnature.co.id has no records as of 26 Sep 2026). Once the DNS records below exist, attach it with: `echo windowofnature.co.id > CNAME && git add CNAME && git commit -m "domain" && git push`, then enable Enforce HTTPS after the cert is issued.
+Custom domain attached 28 Sep 2026. DNS is on **Cloudflare** (nameservers clay/gabriella.ns.cloudflare.com, managed by the domain seller) with the records **proxied** (orange cloud). Consequences:
+- Cloudflare terminates HTTPS with its own certificate; GitHub cannot issue one behind the proxy, so **do not turn on "Enforce HTTPS" in GitHub Pages** (it would break or loop).
+- http→https: every page has a tiny inline script (added by `finalize.py`) that upgrades http to https on windowofnature.co.id. Cleaner fix: ask the seller to enable Cloudflare **SSL/TLS → Always Use HTTPS** (and ideally SSL mode "Full").
+- www.windowofnature.co.id 301-redirects to the apex (GitHub does this).
 
 ### DNS records to set at the registrar for windowofnature.co.id
 ```
