@@ -59,7 +59,7 @@ Glenn tried a Codex redesign (commits 159d765, f2f11a4, c26b162: forest green/ed
 Push to `main` → GitHub Pages rebuilds in ~1 min. No CI.
 Custom domain attached 28 Sep 2026. DNS is on **Cloudflare** (nameservers clay/gabriella.ns.cloudflare.com, managed by the domain seller) with the records **proxied** (orange cloud). Consequences:
 - Cloudflare terminates HTTPS with its own certificate; GitHub cannot issue one behind the proxy, so **do not turn on "Enforce HTTPS" in GitHub Pages** (it would break or loop).
-- http→https: every page has a tiny inline script (added by `finalize.py`) that upgrades http to https on windowofnature.co.id. Cleaner fix: ask the seller to enable Cloudflare **SSL/TLS → Always Use HTTPS** (and ideally SSL mode "Full").
+- http→https: every page has a tiny inline script (added by `finalize.py`) that upgrades http to https on windowofnature.co.id. The seller enabled Cloudflare **Always Use HTTPS** and SSL mode **Full** on 28 Sep 2026, so http now 301s to https at the edge; the inline script stays as a harmless fallback.
 - www.windowofnature.co.id 301-redirects to the apex (GitHub does this).
 
 ### DNS records to set at the registrar for windowofnature.co.id
