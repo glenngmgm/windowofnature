@@ -8,7 +8,7 @@ _hash={}
 def _h(p):
     if p not in _hash: _hash[p]=hashlib.md5(open(p,'rb').read()).hexdigest()[:8] if os.path.exists(p) else None
     return _hash[p]
-IMG_RE=re.compile(r'((?:cut|photos|banners|img|og)/[\w.-]+\.(?:webp|png|jpg))(\?v=\w+)?')
+IMG_RE=re.compile(r'((?:cut|photos|banners|img|og|video)/[\w.-]+\.(?:webp|png|jpg|mp4))(\?v=\w+)?')
 def stamp_images(s):
     return IMG_RE.sub(lambda m: m.group(1)+(f'?v={_h(m.group(1))}' if _h(m.group(1)) else ''), s)
 def dims(p):

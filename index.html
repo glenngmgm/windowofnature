@@ -16,8 +16,9 @@
 <link rel="preload" href="fonts/Epilogue-normal-latin-O4ZRFGj5.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png?v=1ef0c2c3">
 <meta name="theme-color" content="#0A1F3D">
-<link rel="preload" as="image" href="banners/b8.webp?v=3cd29365" imagesrcset="banners/b8-m.webp?v=d51fc6c9 800w, banners/b8.webp?v=3cd29365 1599w" imagesizes="(max-width:700px) 100vw, 1320px" fetchpriority="high">
-<link rel="stylesheet" href="site.css?v=e148d4d8">
+<link rel="preload" as="image" href="video/poster-m.webp?v=abe41671" media="(max-width:700px)" fetchpriority="high">
+<link rel="preload" as="image" href="video/poster.webp?v=6b0a3155" media="(min-width:701px)" fetchpriority="high">
+<link rel="stylesheet" href="site.css?v=716e1620">
 </head>
 <body>
 
@@ -36,7 +37,15 @@
 
 <section class="hero-banner">
   <div class="wrap">
-    <img class="hb-img" src="banners/b8.webp?v=3cd29365" srcset="banners/b8-m.webp?v=d51fc6c9 800w, banners/b8.webp?v=3cd29365 1599w" sizes="(max-width:700px) 100vw, 1320px" alt="The WON range: chicken feed, Shōri, Premium and Super rabbit feed, alfalfa hay and hay pellets" data-eager width="1599" height="800" fetchpriority="high" decoding="async">
+    <div class="hb-video">
+      <video class="hb-img" id="herovid" muted playsinline loop preload="none" poster="video/poster.webp?v=6b0a3155"
+        data-sm="video/won-film-720.mp4?v=52ac6e2d" data-lg="video/won-film-1080.mp4?v=e6f4d793" data-poster-sm="video/poster-m.webp?v=abe41671"
+        aria-label="WON brand film: from our mill to their bowl"></video>
+      <div class="vctl">
+        <button type="button" class="vbtn" id="vsound" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path class="vx" d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="vw" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Sound on</span></button>
+        <button type="button" class="vbtn icon" id="vplay" aria-label="Pause film"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="vpause" d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor"/><path class="vplay" d="M8 5l11 7-11 7z" fill="currentColor"/></svg></button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -147,7 +156,7 @@
 
 <a class="wa-float" href="#" data-wa="Hello WON, I have a question." aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 12 12 0 0 0 4.6 4c1.7.7 2.3.8 3.1.7a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.2-.2-.2-.4-.3z"/></svg></a>
 
-<script src="site.js?v=e63f2349"></script>
+<script src="site.js?v=972162c7"></script>
 <script>
 document.querySelectorAll('#segs .seg').forEach((s,i)=>s.onclick=()=>{document.querySelectorAll('#segs .seg').forEach(x=>x.classList.remove('on'));s.classList.add('on');document.querySelectorAll('.b2b .photo img').forEach(im=>im.classList.toggle('on',+im.dataset.seg===i));});
 </script>

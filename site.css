@@ -405,3 +405,16 @@ body.cc-open .wa-float{bottom:110px;transition:bottom .4s var(--ease)}
 .spx figcaption{position:absolute;left:0;right:0;bottom:0;padding:26px 24px 20px;text-align:left;font-family:var(--serif);font-size:2rem;line-height:1;color:#fff;background:linear-gradient(180deg,transparent,rgba(10,31,61,.85))}
 @media(max-width:700px){.spx{grid-template-columns:1fr}}
 .fhero::after{background:linear-gradient(90deg,rgba(10,31,61,.86) 0%,rgba(10,31,61,.6) 45%,rgba(10,31,61,.2) 100%),linear-gradient(180deg,rgba(10,31,61,.25),rgba(10,31,61,.55))}
+
+/* ===== home hero: brand film ===== */
+.hb-video{position:relative;border-radius:30px;overflow:hidden;box-shadow:0 40px 90px rgba(11,22,38,.18);background:#0A1F3D;aspect-ratio:16/9}
+.hb-video .hb-img{display:block;width:100%;height:100%;aspect-ratio:16/9;object-fit:cover;border-radius:0;box-shadow:none;background:#0A1F3D}
+.vctl{position:absolute;right:20px;bottom:20px;display:flex;gap:10px;z-index:2}
+.vbtn{display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 20px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(10,31,61,.62);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#fff;font:500 .92rem/1 var(--sans);cursor:pointer;transition:background .3s,transform .3s}
+.vbtn:hover{background:rgba(10,31,61,.85);transform:translateY(-1px)}
+.vbtn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.vbtn svg{width:20px;height:20px}
+.vbtn.icon{width:48px;padding:0;justify-content:center}
+.vbtn .vw{display:none}.vbtn[aria-pressed="true"] .vw{display:inline}.vbtn[aria-pressed="true"] .vx{display:none}
+.vbtn .vplay{display:none}.vbtn.paused .vplay{display:inline}.vbtn.paused .vpause{display:none}
+@media(max-width:640px){.hb-video{border-radius:18px}.vctl{right:10px;bottom:10px;gap:6px}.vbtn{height:40px;padding:0 14px;font-size:.8rem}.vbtn.icon{width:40px}.vbtn svg{width:18px;height:18px}}

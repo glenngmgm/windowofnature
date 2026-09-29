@@ -26,6 +26,31 @@ if(heroph&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
   },{passive:true});
 }
 
+/* ===== home brand film =====
+   Muted autoplay (browsers only allow silent autoplay). Phones get the 720p file, larger screens 1080p.
+   Respects reduced-motion (no autoplay) and Data Saver (poster only until the visitor presses play). */
+(function(){
+  const v=document.getElementById('herovid'); if(!v) return;
+  const small=matchMedia('(max-width:900px)').matches;
+  if(small&&v.dataset.posterSm) v.poster=v.dataset.posterSm;
+  v.src=small?v.dataset.sm:v.dataset.lg;
+  const saveData=navigator.connection&&navigator.connection.saveData;
+  const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const pb=document.getElementById('vplay'), sb=document.getElementById('vsound');
+  const setPaused=p=>{pb.classList.toggle('paused',p);pb.setAttribute('aria-label',p?'Play film':'Pause film');};
+  const tryPlay=()=>{const p=v.play();if(p&&p.catch)p.catch(()=>setPaused(true));};
+  if(!calm&&!saveData){v.preload='auto';
+    // start when the film is on screen, pause when scrolled away (saves battery and data)
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){if(!v.dataset.userPaused)tryPlay();}else if(!v.paused)v.pause();}),{threshold:.25});
+    io.observe(v);
+  } else setPaused(true);
+  v.addEventListener('play',()=>setPaused(false)); v.addEventListener('pause',()=>setPaused(true));
+  pb.addEventListener('click',()=>{if(v.paused){delete v.dataset.userPaused;tryPlay();}else{v.dataset.userPaused='1';v.pause();}});
+  sb.addEventListener('click',()=>{const on=v.muted; v.muted=!on; if(on){v.volume=1; if(v.paused)tryPlay();}
+    sb.setAttribute('aria-pressed',String(on)); sb.querySelector('span').textContent=on?'Sound off':'Sound on';
+    if(typeof track==='function')track('film_sound',{state:on?'on':'off'});});
+})();
+
 /* ===== analytics with consent (UU PDP) =====
    Google Analytics loads ONLY after the visitor taps "Accept".
    The choice is stored in this browser; "Cookie settings" in the footer reopens the notice. */
