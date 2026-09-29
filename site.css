@@ -67,7 +67,7 @@ header .pill{width:min(1320px,100% - 32px);margin-inline:auto;background:rgba(10
 
 /* hero */
 .hero{position:relative;min-height:min(100svh,960px);display:grid;place-items:center start;color:#fff;overflow:hidden;background:var(--navy)}
-.hero .ph{position:absolute;inset:0;background:url(photos/hero-white.webp) center 38%/cover;transform:scale(1.06);will-change:transform}
+.hero .ph{position:absolute;inset:0;background:url(photos/hero-white.webp?v=5754f55e) center 38%/cover;transform:scale(1.06);will-change:transform}
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,31,61,.55) 0%,rgba(10,31,61,.2) 55%,rgba(10,31,61,0) 100%),linear-gradient(180deg,rgba(10,31,61,.35) 0%,rgba(10,31,61,0) 40%,rgba(10,31,61,.6) 100%)}
 .hero .wrap{position:relative;z-index:2;padding:150px 0 110px}
 .hero h1{max-width:11ch;text-shadow:0 12px 50px rgba(0,0,0,.45)}
@@ -118,8 +118,8 @@ section{padding:clamp(90px,10vw,150px) 0;position:relative}
 @media(max-width:640px){.grid{grid-template-columns:1fr;gap:14px}.card{padding:26px 22px 22px;border-radius:22px}.card .ph{height:240px}.card .ph img{max-height:240px}.card h3{font-size:1.9rem}}
 
 /* full-bleed photo band */
-.photoband{height:clamp(260px,38vw,520px);background:url(photos/rabbit-white-close.webp) center 45%/cover;position:relative}
-.photoband.hay{background-image:url(photos/hay-band.webp);background-position:center}
+.photoband{height:clamp(260px,38vw,520px);background:url(photos/rabbit-white-close.webp?v=6c760afe) center 45%/cover;position:relative}
+.photoband.hay{background-image:url(photos/hay-band.webp?v=e8646684);background-position:center}
 .photoband::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,31,61,.15),rgba(10,31,61,.35))}
 
 /* story w/ polaroids */
@@ -196,7 +196,7 @@ section{padding:clamp(90px,10vw,150px) 0;position:relative}
 
 /* trust */
 #trust{background:var(--navy);color:var(--ivory);text-align:center;overflow:hidden}
-#trust .ph{position:absolute;inset:0;background:url(photos/rabbit-white-grass.webp) center/cover;opacity:.22}
+#trust .ph{position:absolute;inset:0;background:url(photos/rabbit-white-grass.webp?v=988ebf73) center/cover;opacity:.22}
 #trust .wrap{position:relative}
 #trust .stars{color:var(--gold);letter-spacing:10px;font-size:1.4rem;margin-bottom:24px}
 #trust h2{max-width:18ch;margin-inline:auto}

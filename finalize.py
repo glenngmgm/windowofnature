@@ -16,6 +16,23 @@ def dims(p):
         try: _size[p]=Image.open(p).size
         except Exception: _size[p]=None
     return _size[p]
+import base64,io
+from PIL import ImageFilter
+_lq={}
+def lqip(p):
+    """~250-byte blurred preview of a photo, shown instantly while the real image downloads."""
+    if p not in _lq:
+        im=Image.open(p).convert('RGB'); im.thumbnail((24,24)); im=im.filter(ImageFilter.GaussianBlur(.6))
+        b=io.BytesIO(); im.save(b,'WEBP',quality=45); _lq[p]='data:image/webp;base64,'+base64.b64encode(b.getvalue()).decode()
+    return _lq[p]
+LQ_RE=re.compile(r';?background:url\(data:image/webp;base64,[^)]*\) [^;"]*')
+def add_lqip(tag,src):
+    tag=LQ_RE.sub('',tag); tag=tag.replace(' style=""','')
+    if not src.startswith('photos/') or not os.path.exists(src): return tag
+    pos=re.search(r'object-position:([^;"]+)',tag); pos=pos.group(1).strip() if pos else 'center'
+    bg=f'background:url({lqip(src)}) {pos}/cover no-repeat'
+    if ' style="' in tag: return re.sub(r' style="([^"]*)"',lambda m:f' style="{m.group(1).rstrip(";")};{bg}"',tag,1)
+    return tag[:-1].rstrip('/').rstrip()+f' style="{bg}">'
 def fix_img(tag):
     m=re.search(r'src="([^"]+)"',tag)
     if not m or m.group(1).startswith('http'): return tag
@@ -26,9 +43,11 @@ def fix_img(tag):
     if 'data-eager' in tag: extra+=' fetchpriority="high" decoding="async"'
     elif 'logo' in src: extra+=' decoding="async"'
     else: extra+=' loading="lazy" decoding="async"'
-    return tag[:-1].rstrip('/').rstrip()+extra+'>'
+    return add_lqip(tag[:-1].rstrip('/').rstrip()+extra+'>',src)
 import hashlib
 def asset_version(p): return hashlib.md5(open(p,'rb').read()).hexdigest()[:8]
+_css=open('site.css').read(); _css2=IMG_RE.sub(lambda m: m.group(1)+(f'?v={_h(m.group(1))}' if _h(m.group(1)) else ''),_css)
+if _css2!=_css: open('site.css','w').write(_css2); print('stamped site.css')
 V={'site.css':asset_version('site.css'),'site.js':asset_version('site.js')}
 HTTPS_UPGRADE='<script>if(location.protocol==="http:"&&/(^|\\.)windowofnature\\.co\\.id$/.test(location.hostname))location.replace("https://"+location.host+location.pathname+location.search+location.hash)</script>'
 for f in glob.glob('*.html'):
@@ -36,6 +55,8 @@ for f in glob.glob('*.html'):
     if 'location.protocol==="http:"' not in s:
         s=s.replace('<meta charset="UTF-8">','<meta charset="UTF-8">\n'+HTTPS_UPGRADE,1)
     s=re.sub(r'<img\b[^>]*>',lambda m:fix_img(m.group(0)),s)
+    s=re.sub(r'style="background-image:url\((photos/[\w.-]+\.webp)(\?v=\w+)?\)(?:,url\(data:[^)]*\))?"',
+             lambda m:f'style="background-image:url({m.group(1)}),url({lqip(m.group(1))})"',s)
     s=stamp_images(s)
     s=re.sub(r'href="site\.css(\?v=\w+)?"',f'href="site.css?v={V["site.css"]}"',s)
     s=re.sub(r'src="site\.js(\?v=\w+)?"',f'src="site.js?v={V["site.js"]}"',s)

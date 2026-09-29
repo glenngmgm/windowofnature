@@ -28,25 +28,33 @@ if(heroph&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
 
 /* ===== home brand film =====
    Muted autoplay (browsers only allow silent autoplay). Phones get the 720p file, larger screens 1080p.
-   Respects reduced-motion (no autoplay) and Data Saver (poster only until the visitor presses play). */
+   The poster is chosen here (not in the HTML) so phones never download the desktop poster.
+   The film starts only after the page's own images have loaded, and stops downloading when scrolled
+   away, so it never slows the photos down. Respects reduced-motion and Data Saver (poster only). */
 (function(){
   const v=document.getElementById('herovid'); if(!v) return;
   const small=matchMedia('(max-width:900px)').matches;
-  if(small&&v.dataset.posterSm) v.poster=v.dataset.posterSm;
-  v.src=small?v.dataset.sm:v.dataset.lg;
+  v.poster=small&&v.dataset.posterSm?v.dataset.posterSm:v.dataset.posterLg;
+  const file=small?v.dataset.sm:v.dataset.lg;
   const saveData=navigator.connection&&navigator.connection.saveData;
   const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const pb=document.getElementById('vplay'), sb=document.getElementById('vsound');
+  let resumeAt=0, inView=false, ready=false;
   const setPaused=p=>{pb.classList.toggle('paused',p);pb.setAttribute('aria-label',p?'Play film':'Pause film');};
-  const tryPlay=()=>{const p=v.play();if(p&&p.catch)p.catch(()=>setPaused(true));};
-  if(!calm&&!saveData){v.preload='auto';
-    // start when the film is on screen, pause when scrolled away (saves battery and data)
-    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){if(!v.dataset.userPaused)tryPlay();}else if(!v.paused)v.pause();}),{threshold:.25});
-    io.observe(v);
-  } else setPaused(true);
+  const attach=()=>{if(v.getAttribute('src'))return; v.src=file; if(resumeAt){v.addEventListener('loadedmetadata',()=>{v.currentTime=resumeAt},{once:true});}};
+  const tryPlay=()=>{attach();const p=v.play();if(p&&p.catch)p.catch(()=>setPaused(true));};
+  const fullyBuffered=()=>v.buffered.length&&v.duration&&v.buffered.end(v.buffered.length-1)>=v.duration-.5;
+  // scrolled away: pause, and if the file is still downloading, drop it so photos get the bandwidth
+  const park=()=>{if(!v.getAttribute('src'))return; v.pause(); if(!fullyBuffered()){resumeAt=v.currentTime; v.removeAttribute('src'); v.load();}};
   v.addEventListener('play',()=>setPaused(false)); v.addEventListener('pause',()=>setPaused(true));
+  if(!calm&&!saveData){
+    const go=()=>{if(ready)return;ready=true;v.preload='auto';if(inView&&!v.dataset.userPaused)tryPlay();};
+    if(document.readyState==='complete')setTimeout(go,150); else{addEventListener('load',()=>setTimeout(go,150),{once:true});setTimeout(go,3000);}
+    new IntersectionObserver(es=>es.forEach(e=>{inView=e.isIntersecting;
+      if(inView){if(ready&&!v.dataset.userPaused)tryPlay();}else park();}),{threshold:.25}).observe(v);
+  } else setPaused(true);
   pb.addEventListener('click',()=>{if(v.paused){delete v.dataset.userPaused;tryPlay();}else{v.dataset.userPaused='1';v.pause();}});
-  sb.addEventListener('click',()=>{const on=v.muted; v.muted=!on; if(on){v.volume=1; if(v.paused)tryPlay();}
+  sb.addEventListener('click',()=>{const on=v.muted; v.muted=!on; if(on){v.volume=1; if(v.paused){delete v.dataset.userPaused;tryPlay();}}
     sb.setAttribute('aria-pressed',String(on)); sb.querySelector('span').textContent=on?'Sound off':'Sound on';
     if(typeof track==='function')track('film_sound',{state:on?'on':'off'});});
 })();
