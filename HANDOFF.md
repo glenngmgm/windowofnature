@@ -45,6 +45,12 @@ Glenn tried a Codex redesign (commits 159d765, f2f11a4, c26b162: forest green/ed
 - Icons: img/favicon-32.png, img/apple-touch-icon.png, img/icon-192.png. robots.txt + sitemap.xml at root.
 
 
+### Image speed (29 Sep 2026)
+- Photos are sized to what they're actually displayed at (measured in Chrome at 390/1440/1920 px wide, allowing for 2x/3x screens). The species photos on the feedmill page were up to 4x too big (sheep 866KB -> 272KB). New photos: keep them no wider than about 2x their on-screen width, WebP quality ~74.
+- `finalize.py` puts a ~250-byte blurred preview (inline data-URI background) on every `photos/` `<img>` and on inline `background-image:url(photos/...)` bands, so a picture area is never blank while loading. It also version-stamps image URLs inside site.css.
+- Home film (site.js): the poster is picked in JS (phones never fetch the desktop poster). The film starts only after the page's images have loaded (or 3 s at most), and when scrolled away it pauses and drops an unfinished download so photos get the bandwidth. In a throttled 4G phone test, lower photos went from ~6.5 s each to under 1 s.
+- Still possible (needs the Cloudflare account, which the domain seller holds): a Cache Rule "cache everything, Edge TTL 1 month" for images/video. It's safe because every asset URL is version-stamped. Right now GitHub's 10-min max-age makes Cloudflare re-check GitHub (US) for every image every 10 minutes.
+
 ## Cookie notice & privacy (UU PDP)
 - Google Analytics loads ONLY after the visitor taps Accept on the cookie notice (site.js, "analytics with consent"). Choice stored in localStorage `won-consent` (granted/denied). Decline deletes any `_ga` cookies. Footer "Cookie settings" reopens the notice on every page. Outbound click events fire only when consent is granted.
 - `privacy.html` explains what is collected, cookies, other services (GitHub Pages, Google Fonts, WhatsApp, Shopee/TikTok) and rights under UU No. 27/2022. Update its "Updated" date if anything changes.
